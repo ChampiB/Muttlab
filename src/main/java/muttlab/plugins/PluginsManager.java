@@ -12,6 +12,7 @@ import java.util.*;
 public class PluginsManager implements Observer {
 
     private List<Plugin> plugins;
+    private String plugins_dir = "./bin/plugins/";
 
     /**
      * Singleton design pattern.
@@ -23,7 +24,7 @@ public class PluginsManager implements Observer {
     private PluginsManager() {
         plugins = new ArrayList<>();
         try {
-            List<String> jarsName = getListOfJarFiles("./plugins");
+            List<String> jarsName = getListOfJarFiles(plugins_dir);
             for (String jarName : jarsName) {
                 Object plugin = loadPluginFrom(jarName);
                 if (plugin instanceof Plugin) {
@@ -42,7 +43,7 @@ public class PluginsManager implements Observer {
     public Object loadPluginFrom(String jarName) throws Exception{
         String pluginName = jarName.substring(0, jarName.length() - 4);
         PluginClassLoader cl = new PluginClassLoader();
-        cl.addFile("./plugins/" + pluginName + ".jar");
+        cl.addFile(plugins_dir + pluginName + ".jar");
         Class pluginClass = cl.loadClass(pluginName + ".Plugin");
         return pluginClass.newInstance();
     }

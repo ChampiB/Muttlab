@@ -3,7 +3,6 @@ package muttlab.math.matrices;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class DenseMatrix extends Matrix {
@@ -252,5 +251,11 @@ public class DenseMatrix extends Matrix {
      * Create a copy of the this.
      * @return the copy.
      */
-    public Matrix copy() { return new DenseMatrix().from(data); }
+    public Matrix copy() {
+        Float[][] data_copy = new Float[data.length][];
+        for (int i = 0; i < data.length; i++) {
+            data_copy[i] = Arrays.copyOf(data[i], data[i].length);
+        }
+        return new DenseMatrix().from(data_copy);
+    }
 }

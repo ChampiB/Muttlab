@@ -3,5 +3,6 @@ distribution
 target
 MuttLab.jar
 bin
+bin-test
 plugins
 .idea

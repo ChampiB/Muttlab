@@ -24,18 +24,10 @@ public class MuttLab {
     private Stack<Element> elements = new Stack<>();
 
     /**
-     * Entry point of the MuttLab program.
-     * @param args : The program's parameters.
-     */
-    public static void main(String[] args) {
-        new MuttLab().startSession();
-    }
-
-    /**
      * This function create the links between observable and observers.
      * Then, it execute the user's commands.
      */
-    private void startSession() {
+    public void start() {
         // Make sure that the PluginsManager and UserInterface display messages in english.
         LanguageObservable.get().addObserver(PluginsManager.get());
         LanguageObservable.get().addObserver(MuttLabDictionary.getInstance());
