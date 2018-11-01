@@ -1,0 +1,5 @@
+[ 1 1; 1 1 ]
+dup
+*
+save result.txt
+quit

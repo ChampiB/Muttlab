@@ -1,0 +1,3 @@
+UNKNOWN_COMMAND_MESSAGE=Command is unknown.
+WELCOME_MESSAGE=\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱ \n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏   Welcome to MuttLab!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏(textart4u.blogspot.com)\n\nMuttLab is an amazing new, matrix calculator.\nType 'help' if you need help.\n
+GOODBYE_MESSAGE=Thank you for using MuttLab\n\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱\n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏     hee, hee, hee!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏        ▕\nThank you for using MuttLab.  Good bye.\n
