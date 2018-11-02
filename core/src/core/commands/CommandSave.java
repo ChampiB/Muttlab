@@ -3,6 +3,7 @@ package core.commands;
 import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
 import muttlab.helpers.DisplayHelper;
+import muttlab.helpers.FileHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -35,19 +36,14 @@ public class CommandSave extends Command {
             );
         }
         // Save the last matrix of the stack.
-        FileWriter fileWriter = null;
         try {
-            File file = new File(parameters[1]);
-            file.createNewFile();
-            fileWriter = new FileWriter(file);
+            final FileWriter fileWriter = FileHelper.openWriter(parameters[1]);
             fileWriter.write(elements.peek().asString());
             fileWriter.flush();
         } catch (IOException e) {
             DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.CANT_READ_FROM_FILE_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+                ui, CoreKeys.FAIL_TO_WRITE_IN_FILE.toString(), CoreDictionary.getInstance(), false
             );
-        } finally {
-            try { fileWriter.close(); } catch (Exception e) {}
         }
         return false;
     }

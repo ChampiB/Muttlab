@@ -25,7 +25,7 @@ public class CommandQuit extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) {
-        // Check that there is no command's parameters.
+        // Check that there is no parameter.
         if (getCommand().split(" ").length > 1) {
             return DisplayHelper.printErrAndReturn(
                 ui, CoreKeys.QUIT_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false

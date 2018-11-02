@@ -3,7 +3,11 @@ package muttlab.math.matrices;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class DenseMatrix extends Matrix {
 
@@ -127,6 +131,37 @@ public class DenseMatrix extends Matrix {
     }
 
     /**
+     * Load the matrix's data from a csv row.
+     * @param s: one row of the csv file.
+     * @return the matrix's data.
+     * @throws Exception if the row is malformed.
+     */
+    private Float[][] dataFromCSV(String s) throws Exception {
+        // Parse CSV row.
+        Float[] row = Arrays.stream(s.split(","))
+                .map(String::trim)
+                .map(str -> {
+                    try {
+                        return Float.valueOf(str);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .toArray(Float[]::new);
+        // Check that the matrix is valid.
+        for (Float elem: row) {
+            if (elem == null) {
+                throw new Exception("Invalid string format");
+            }
+        }
+        // Return the matrix's data.
+        Float[][] data = new Float[1][];
+        data[0] = row;
+        return data;
+    }
+
+
+    /**
      * Load this from array of float.
      * @param d : The array of float.
      * @return this.
@@ -145,7 +180,11 @@ public class DenseMatrix extends Matrix {
      * @throws Exception if string is malformed.
      */
     public Matrix from(String s) throws Exception {
-        data = dataFrom(s);
+        try {
+            data = dataFrom(s);
+        } catch (Exception e) {
+            data = dataFromCSV(s);
+        }
         numberOfRows = data.length;
         numberOfColumns = data[0].length;
         return this;

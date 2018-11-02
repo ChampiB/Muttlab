@@ -17,10 +17,10 @@ public class CommandFactory {
      */
     private static HashMap<StreamingKeys, Function<String, Command>> createMap() {
         HashMap<StreamingKeys, Function<String, Command>> commands = new HashMap<>();
-        commands.put(StreamingKeys.NEW_STREAM, CommandNewStream::new);
-        commands.put(StreamingKeys.FILTER_SIZE, CommandFilterSize::new);
-        commands.put(StreamingKeys.LOAD_STREAM, CommandLoadStream::new);
-        commands.put(StreamingKeys.SAVE_STREAM, CommandSaveStream::new);
+        commands.put(StreamingKeys.STREAM_FROM, CommandStreamFrom::new);
+        commands.put(StreamingKeys.FILTER_WIDTH, CommandFilterWidth::new);
+        commands.put(StreamingKeys.SAVE_STACK, CommandSaveStack::new);
+        commands.put(StreamingKeys.SAVE_FILE, CommandSaveFile::new);
         commands.put(StreamingKeys.MAP_EW_MUL, CommandMapEwMul::new);
         commands.put(StreamingKeys.REDUCE_ADD, CommandReduceAdd::new);
         commands.put(StreamingKeys.REDUCE_MIN, CommandReduceMin::new);

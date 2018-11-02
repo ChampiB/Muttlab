@@ -6,16 +6,19 @@ package streaming.languages;
 public enum StreamingKeys {
     NOT_ENOUGH_ELEMENT_IN_QUEUE,
     INVALID_OPERATION_ERROR_MESSAGE,
-    NEW_STREAM,
+    CANT_STREAM_THE_FILE,
+    STREAM_FROM,
+    FAIL_TO_WRITE_IN_FILE,
     NOT_ENOUGH_PARAMETERS,
+    NOT_VALID_INT,
     REDUCE_ADD,
     REDUCE_MIN,
     REDUCE_MAX,
     SORT_BY,
-    FILTER_SIZE,
+    FILTER_WIDTH,
     MAP_EW_MUL,
-    LOAD_STREAM,
-    SAVE_STREAM;
+    SAVE_STACK,
+    SAVE_FILE;
 
     /**
      * Transform the command name write by the user into the corresponding key.

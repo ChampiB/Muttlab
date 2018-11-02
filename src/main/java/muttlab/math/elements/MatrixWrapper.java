@@ -19,7 +19,7 @@ public class MatrixWrapper extends Element {
      * Constructor.
      * @param matrix : The matrix to wrap.
      */
-    private MatrixWrapper(Matrix matrix) {
+    public MatrixWrapper(Matrix matrix) {
         m = matrix;
     }
 

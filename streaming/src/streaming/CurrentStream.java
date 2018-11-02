@@ -1,17 +1,19 @@
 package streaming;
 
+import muttlab.math.matrices.Matrix;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CurrentStream {
 
-    private Optional<Stream> stream = Optional.empty();
+    private Optional<Stream<Matrix>> stream = Optional.empty();
 
     /**
      * Getter method.
      * @return the current stream.
      */
-    public Optional<Stream> getCurrentStream() {
+    public Optional<Stream<Matrix>> getCurrentStream() {
         return stream;
     }
 
@@ -19,7 +21,7 @@ public class CurrentStream {
      * Setter method.
      * @param s: the new stream.
      */
-    public void setCurrentStream(Stream s) {
+    public void setCurrentStream(Stream<Matrix> s) {
         stream = Optional.ofNullable(s);
     }
 

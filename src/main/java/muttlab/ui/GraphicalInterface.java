@@ -44,7 +44,7 @@ public class GraphicalInterface extends UserInterface {
         primaryStage.setTitle(DefaultConfig.getApplicationName());
 
         // Build the list of consume position.
-        List<Function<KeyEvent, Boolean>> cond = new ArrayList<>();
+        final List<Function<KeyEvent, Boolean>> cond = new ArrayList<>();
         cond.add(ke -> ke.getCode().equals(KeyCode.HOME) || ke.getCode().equals(KeyCode.PAGE_UP));
         cond.add(ke -> ke.getCode().equals(KeyCode.UP));
         cond.add(ke -> ke.getCode().equals(KeyCode.LEFT) && console.getCaretPosition() <= posOfLastPrompt());
@@ -54,25 +54,9 @@ public class GraphicalInterface extends UserInterface {
         console = new TextArea();
         console.setStyle("-fx-text-fill: black;");
         console.onKeyPressedProperty().setValue(x -> {
-            // Ensure that the user can't leave the edition area (on key pressed).
-            if (
-                console.getCaretPosition() < posOfLastPrompt()
-                || x.getCode().equals(KeyCode.HOME)
-                || x.getCode().equals(KeyCode.PAGE_UP)
-            ) {
-                console.positionCaret(posOfLastPrompt());
-            }
-            consumeIf(x, cond);
-            // Enter was entered, handle the command.
-            if (x.getCode().equals(KeyCode.ENTER)) {
-                try {
-                    String lastLine = console.getText().substring(posOfLastPrompt());
-                    out.write(lastLine.getBytes());
-                    out.write('\n');
-                } catch (Exception io) {
-                    // Do nothing.
-                }
-            }
+            checkCaretPosition(x, cond);
+            handleEscape(x);
+            handleEnter(x);
         });
         // Ensure that the user can't leave the edition area (on click).
         console.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<Event>() {
@@ -88,6 +72,51 @@ public class GraphicalInterface extends UserInterface {
         root.getChildren().add(console);
         primaryStage.setScene(new Scene(root, 1080, 720));
         primaryStage.show();
+    }
+
+    /**
+     * Ensure that the user can't leave the edition area.
+     * @param keyEvent: The event to handle.
+     */
+    private void checkCaretPosition(KeyEvent keyEvent, List<Function<KeyEvent, Boolean>> conditions) {
+        // Ensure that the user can't leave the edition area (on key pressed).
+        if (
+            console.getCaretPosition() < posOfLastPrompt()
+            || keyEvent.getCode().equals(KeyCode.HOME)
+            || keyEvent.getCode().equals(KeyCode.PAGE_UP)
+        ) {
+            console.positionCaret(posOfLastPrompt());
+        }
+        consumeIf(keyEvent, conditions);
+    }
+
+    /**
+     * Handle the event if the user pressed "escape".
+     * @param keyEvent: The event to handle.
+     */
+    private void handleEscape(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+            // Escape was entered, exit the application.
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Handle the event if the user pressed "enter".
+     * @param keyEvent: The event to handle.
+     */
+    private void handleEnter(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            // Enter was entered, handle the command.
+            try {
+                console.positionCaret(console.getText().length());
+                String lastLine = console.getText().substring(posOfLastPrompt());
+                out.write(lastLine.getBytes());
+                out.write('\n');
+            } catch (Exception io) {
+                // Do nothing.
+            }
+        }
     }
 
     /**
