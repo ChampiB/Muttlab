@@ -2,6 +2,7 @@ package core.commands;
 
 import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
+import muttlab.helpers.DisplayHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -26,12 +27,14 @@ public class CommandSave extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) {
+        // Check that there is at least one parameter.
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 1) {
-            String errorMessage = CoreKeys.FILE_NAME_NOT_FOUND_ERROR_MESSAGE.toString();
-            ui.printlnErr(CoreDictionary.getInstance().getValue(errorMessage));
-            return false;
+            return DisplayHelper.printErrAndReturn(
+                ui, CoreKeys.FILE_NAME_NOT_FOUND_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+            );
         }
+        // Save the last matrix of the stack.
         FileWriter fileWriter = null;
         try {
             File file = new File(parameters[1]);
@@ -40,8 +43,9 @@ public class CommandSave extends Command {
             fileWriter.write(elements.peek().asString());
             fileWriter.flush();
         } catch (IOException e) {
-            String errorMessage = CoreKeys.CANT_READ_FROM_FILE_ERROR_MESSAGE.toString();
-            ui.printlnErr(CoreDictionary.getInstance().getValue(errorMessage));
+            DisplayHelper.printErrAndReturn(
+                ui, CoreKeys.CANT_READ_FROM_FILE_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+            );
         } finally {
             try { fileWriter.close(); } catch (Exception e) {}
         }

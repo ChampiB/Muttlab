@@ -1,11 +1,13 @@
 HELP_MESSAGE=You are using MatBench.\n\nYour command words are:\n   show [ + - * .* dup help script quit
 QUIT_ERROR_MESSAGE=Quit what?
 NEW_MATRIX_ERROR_MESSAGE=what's the matrix?
-NOT_ENOUGH_ELEMENT_IN_THE_QUEUE_ERROR_MESSAGE=There is not enough matrix in the queue.
+NOT_ENOUGH_ELEMENT_IN_QUEUE=There is not enough matrix in the queue.
 INVALID_OPERATION_ERROR_MESSAGE=The operation is not valid.
 FILE_NAME_NOT_FOUND_ERROR_MESSAGE=File not found.
 SAVE_CANT_WRITE_IN_FILE_ERROR_MESSAGE=Can't write the matrix in the file.
 CANT_READ_FROM_FILE_ERROR_MESSAGE=Can't read in the file.
+NOT_ENOUGH_PARAMETERS=Not enough parameters.
+NOT_VALID_FLOAT=Float is not valid.
 NEW_MATRIX=[
 ADD=+
 SUB=-

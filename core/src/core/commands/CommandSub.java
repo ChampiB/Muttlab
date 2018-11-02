@@ -2,11 +2,11 @@ package core.commands;
 
 import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
+import muttlab.helpers.DisplayHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 
-import java.util.List;
 import java.util.Stack;
 
 public class CommandSub extends Command {
@@ -24,11 +24,13 @@ public class CommandSub extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) {
+        // Check that there is at least one parameter.
         if (elements.size() < 2) {
-            String errorMessage = CoreKeys.NOT_ENOUGH_ELEMENT_IN_THE_QUEUE_ERROR_MESSAGE.toString();
-            ui.printlnErr(CoreDictionary.getInstance().getValue(errorMessage));
-            return false;
+            return DisplayHelper.printErrAndReturn(
+                ui, CoreKeys.NOT_ENOUGH_ELEMENT_IN_QUEUE.toString(), CoreDictionary.getInstance(), false
+            );
         }
+        // Execute the subtraction between the two last element in the queue.
         try {
             Element e1 = elements.pop();
             Element e2 = elements.pop();
@@ -36,8 +38,9 @@ public class CommandSub extends Command {
             elements.push(res);
             ui.println(res.asString());
         } catch (Exception e) {
-            String errorMessage = CoreKeys.INVALID_OPERATION_ERROR_MESSAGE.toString();
-            ui.printlnErr(CoreDictionary.getInstance().getValue(errorMessage));
+            return DisplayHelper.printErrAndReturn(
+                ui, CoreKeys.INVALID_OPERATION_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+            );
         }
         return false;
     }

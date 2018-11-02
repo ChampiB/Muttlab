@@ -2,6 +2,7 @@ package core.commands;
 
 import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
+import muttlab.helpers.DisplayHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -24,11 +25,12 @@ public class CommandQuit extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) {
+        // Check that there is no command's parameters.
         if (getCommand().split(" ").length > 1) {
-            String errorMessage = CoreKeys.QUIT_ERROR_MESSAGE.toString();
-            ui.printlnErr(CoreDictionary.getInstance().getValue(errorMessage));
-            return false;
+            return DisplayHelper.printErrAndReturn(
+                ui, CoreKeys.QUIT_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+            );
         }
-        return true; // signal that we want to quit
+        return true; // Signal that we want to quit.
     }
 }

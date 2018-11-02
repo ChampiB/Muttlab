@@ -1,0 +1,11 @@
+NOT_ENOUGH_ELEMENT_IN_QUEUE=There is not enough matrix in the queue.
+INVALID_OPERATION_ERROR_MESSAGE=The operation is not valid.
+NEW_STREAM=new_stream
+REDUCE_ADD=reduce_add
+REDUCE_MIN=reduce_min
+REDUCE_MAX=reduce_max
+SORT_BY=sort_by
+FILTER_SIZE=filter_size
+MAP_EW_MUL=map_ew_mul
+LOAD_STREAM=load_stream
+SAVE_STREAM=save_stream
