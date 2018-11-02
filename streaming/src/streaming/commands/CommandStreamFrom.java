@@ -41,7 +41,7 @@ public class CommandStreamFrom extends Command {
     }
 
     /**
-     * Add the two last elements of the list.
+     * Start to streaming data from file.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.
      * @return true if the session must be closed and false otherwise.

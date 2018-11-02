@@ -3,17 +3,14 @@ package muttlab.math.matrices;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class DenseMatrix extends Matrix {
 
     private Float[][] data = null;
-    private Integer numberOfRows = 0;
-    private Integer numberOfColumns = 0;
+    private Integer height = 0;
+    private Integer width = 0;
 
     /**
      * Default constructor.
@@ -22,16 +19,16 @@ public class DenseMatrix extends Matrix {
 
     /**
      * Constructor.
-     * @param numberOfRows : The matrix's number of rows.
-     * @param numberOfColumns : The matrix's number of columns.
+     * @param height : The matrix's number of rows.
+     * @param width : The matrix's number of columns.
      * @throws InvalidMatrixSize if the matrix size is not valid.
      */
-    public DenseMatrix(Integer numberOfRows, Integer numberOfColumns) throws InvalidMatrixSize {
-        if (numberOfRows < 0 || numberOfColumns < 0)
+    public DenseMatrix(Integer height, Integer width) throws InvalidMatrixSize {
+        if (height < 0 || width < 0)
             throw new InvalidMatrixSize();
-        this.numberOfColumns = numberOfColumns;
-        this.numberOfRows = numberOfRows;
-        data = new Float[numberOfRows][numberOfColumns];
+        this.width = width;
+        this.height = height;
+        data = new Float[height][width];
         for (int i = 0; i < data.length; i++)
             Arrays.fill(data[i], 0F);
     }
@@ -93,13 +90,13 @@ public class DenseMatrix extends Matrix {
      * Getter method.
      * @return the number of columns.
      */
-    public Integer getNumberOfColumns() { return numberOfColumns; }
+    public Integer getWidth() { return width; }
 
     /**
      * Getter method.
      * @return the number of rows.
      */
-    public Integer getNumberOfRows() { return numberOfRows; }
+    public Integer getHeight() { return height; }
 
     /**
      * Load this.data from string.
@@ -139,15 +136,15 @@ public class DenseMatrix extends Matrix {
     private Float[][] dataFromCSV(String s) throws Exception {
         // Parse CSV row.
         Float[] row = Arrays.stream(s.split(","))
-                .map(String::trim)
-                .map(str -> {
-                    try {
-                        return Float.valueOf(str);
-                    } catch (Exception e) {
-                        return null;
-                    }
-                })
-                .toArray(Float[]::new);
+            .map(String::trim)
+            .map(str -> {
+                try {
+                    return Float.valueOf(str);
+                } catch (Exception e) {
+                    return null;
+                }
+            })
+            .toArray(Float[]::new);
         // Check that the matrix is valid.
         for (Float elem: row) {
             if (elem == null) {
@@ -168,8 +165,8 @@ public class DenseMatrix extends Matrix {
      */
     private Matrix from(Float[][] d) {
         data = d;
-        numberOfRows = data.length;
-        numberOfColumns = data[0].length;
+        height = data.length;
+        width = data[0].length;
         return this;
     }
 
@@ -185,9 +182,51 @@ public class DenseMatrix extends Matrix {
         } catch (Exception e) {
             data = dataFromCSV(s);
         }
-        numberOfRows = data.length;
-        numberOfColumns = data[0].length;
+        height = data.length;
+        width = data[0].length;
         return this;
+    }
+
+    /**
+     * Add columns on the left side of the matrix.
+     * @param n: the number of columns to add.
+     * @param value: the value used to fill the columns.
+     * @return true if the columns have been correctly added false otherwise.
+     */
+    public boolean addColumnsOnTheLeft(int n, float value) {
+        if (n < 0)
+            return false;
+        this.width += n;
+        for (int i = 0; i < data.length; i++) {
+            Float[] newC = new Float[data[i].length + n];
+            for (int j = 0; j < n; j++) {
+                newC[j] = value;
+            }
+            System.arraycopy(data[i], 0, newC, n, data[i].length);
+            data[i] = newC;
+        }
+        return true;
+    }
+
+    /**
+     * Add columns on the right side of the matrix.
+     * @param n: the number of columns to add.
+     * @param value: the value used to fill the columns.
+     * @return true if the columns have been correctly added false otherwise.
+     */
+    public boolean addColumnsOnTheRight(int n, float value) {
+        if (n < 0)
+            return false;
+        this.width += n;
+        for (int i = 0; i < data.length; i++) {
+            Float[] newC = new Float[data[i].length + n];
+            System.arraycopy(data[i], 0, newC, 0, data[i].length);
+            for (int j = data[i].length; j < data[i].length + n; j++) {
+                newC[j] = value;
+            }
+            data[i] = newC;
+        }
+        return true;
     }
 
     /**
@@ -198,9 +237,9 @@ public class DenseMatrix extends Matrix {
         StringBuilder result = new StringBuilder();
         try {
             result.append("[");
-            for (Integer row = 0; row < getNumberOfRows(); row++) {
+            for (Integer row = 0; row < getHeight(); row++) {
                 if (row != 0) result.append(";");
-                for (Integer column = 0; column < getNumberOfColumns(); column++) {
+                for (Integer column = 0; column < getWidth(); column++) {
                     result.append(" ");
                     result.append(get(row, column));
                 }
@@ -219,8 +258,8 @@ public class DenseMatrix extends Matrix {
      */
     public void pointWiseMul(Matrix matrix) throws Exception {
         if (!hasSameSizeAs(matrix)) throw new InvalidMatrixSize();
-        for (Integer column = 0; column < matrix.getNumberOfColumns(); column++) {
-            for (Integer row = 0; row < matrix.getNumberOfRows(); row++) {
+        for (Integer column = 0; column < matrix.getWidth(); column++) {
+            for (Integer row = 0; row < matrix.getHeight(); row++) {
                 set(row, column, get(row, column) * matrix.get(row, column));
             }
         }
@@ -233,8 +272,8 @@ public class DenseMatrix extends Matrix {
      */
     public void add(Matrix matrix) throws Exception {
         if (!hasSameSizeAs(matrix)) throw new InvalidMatrixSize();
-        for (Integer column = 0; column < matrix.getNumberOfColumns(); column++) {
-            for (Integer row = 0; row < matrix.getNumberOfRows(); row++) {
+        for (Integer column = 0; column < matrix.getWidth(); column++) {
+            for (Integer row = 0; row < matrix.getHeight(); row++) {
                 set(row, column, get(row, column) + matrix.get(row, column));
             }
         }
@@ -247,11 +286,11 @@ public class DenseMatrix extends Matrix {
      */
     public void mul(Matrix matrix) throws Exception {
         if (!hasCompatibleSizeWith(matrix)) throw new InvalidMatrixSize();
-        DenseMatrix result = newEmptyMatrix(getNumberOfRows(), matrix.getNumberOfColumns());
-        for (int r = 0; r < getNumberOfRows(); r++) {
-            for (int c = 0; c < matrix.getNumberOfColumns(); c++) {
+        DenseMatrix result = newEmptyMatrix(getHeight(), matrix.getWidth());
+        for (int r = 0; r < getHeight(); r++) {
+            for (int c = 0; c < matrix.getWidth(); c++) {
                 Float value = 0.0F;
-                for (int k = 0; k < getNumberOfColumns(); k++)
+                for (int k = 0; k < getWidth(); k++)
                     value += get(r, k) * matrix.get(k, c);
                 result.set(r, c, value);
             }
@@ -265,8 +304,8 @@ public class DenseMatrix extends Matrix {
      * @throws Exception if an error occurred.
      */
     public void mul(Float scalar) throws Exception {
-        for (Integer column = 0; column < getNumberOfColumns(); column++) {
-            for (Integer row = 0; row < getNumberOfRows(); row++) {
+        for (Integer column = 0; column < getWidth(); column++) {
+            for (Integer row = 0; row < getHeight(); row++) {
                 set(row, column, get(row, column) * scalar);
             }
         }
@@ -279,8 +318,8 @@ public class DenseMatrix extends Matrix {
      */
     public void sub(Matrix matrix) throws Exception {
         if (!hasSameSizeAs(matrix)) throw new InvalidMatrixSize();
-        for (Integer column = 0; column < matrix.getNumberOfColumns(); column++) {
-            for (Integer row = 0; row < matrix.getNumberOfRows(); row++) {
+        for (Integer column = 0; column < matrix.getWidth(); column++) {
+            for (Integer row = 0; row < matrix.getHeight(); row++) {
                 set(row, column, get(row, column) - matrix.get(row, column));
             }
         }

@@ -42,7 +42,7 @@ public class CommandSaveFile extends Command {
     }
 
     /**
-     * Add the two last elements of the list.
+     * Save all the matrices of the stream into the file.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.
      * @return true if the session must be closed and false otherwise.

@@ -72,17 +72,17 @@ public class DenseMatrixTest {
 
     @Test
     public void getNumberOfRowsTest() {
-        // getNumberOfRows should return 3 when the matrix is : "[ 1; 2; 3 ]"
+        // getHeight should return 3 when the matrix is : "[ 1; 2; 3 ]"
         try {
             Matrix m = new DenseMatrix().from("[ 1; 2; 3 ]");
-            Assert.assertTrue(m.getNumberOfRows() == 3);
+            Assert.assertTrue(m.getHeight() == 3);
         } catch (Exception e) {
             Assert.fail();
         }
-        // getNumberOfRows should return 1 when the matrix is : "[ 1 ]"
+        // getHeight should return 1 when the matrix is : "[ 1 ]"
         try {
             Matrix m = new DenseMatrix().from("[ 1 ]");
-            Assert.assertTrue(m.getNumberOfRows() == 1);
+            Assert.assertTrue(m.getHeight() == 1);
         } catch (Exception e) {
             Assert.fail();
         }
@@ -90,17 +90,17 @@ public class DenseMatrixTest {
 
     @Test
     public void getNumberOfColumnsTest() {
-        // getNumberOfColumns should return 1 when the matrix is : "[ 1; 2; 3 ]"
+        // getWidth should return 1 when the matrix is : "[ 1; 2; 3 ]"
         try {
             Matrix m = new DenseMatrix().from("[ 1; 2; 3 ]");
-            Assert.assertTrue(m.getNumberOfColumns() == 1);
+            Assert.assertTrue(m.getWidth() == 1);
         } catch (Exception e) {
             Assert.fail();
         }
-        // getNumberOfColumns should return 1 when the matrix is : "[ 1; 2 ]"
+        // getWidth should return 1 when the matrix is : "[ 1; 2 ]"
         try {
             Matrix m = new DenseMatrix().from("[ 1 2 ]");
-            Assert.assertTrue(m.getNumberOfColumns() == 2);
+            Assert.assertTrue(m.getWidth() == 2);
         } catch (Exception e) {
             Assert.fail();
         }

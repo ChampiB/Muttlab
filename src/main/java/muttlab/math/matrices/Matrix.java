@@ -14,6 +14,22 @@ public abstract class Matrix {
     public abstract Matrix newEmptyMatrix(Integer numberOfRows, Integer numberOfColumns) throws InvalidMatrixSize;
 
     /**
+     * Add columns on the left side of the matrix.
+     * @param n: the number of columns to add.
+     * @param value: the value used to fill the columns.
+     * @return true if the columns have been correctly added false otherwise.
+     */
+    public abstract boolean addColumnsOnTheLeft(int n, float value);
+
+    /**
+     * Add columns on the right side of the matrix.
+     * @param n: the number of columns to add.
+     * @param value: the value used to fill the columns.
+     * @return true if the columns have been correctly added false otherwise.
+     */
+    public abstract boolean addColumnsOnTheRight(int n, float value);
+
+    /**
      * Setter method.
      * @param row : The row that need to be modify.
      * @param column : The column that need to be modify.
@@ -35,13 +51,13 @@ public abstract class Matrix {
      * Getter method.
      * @return the number of columns.
      */
-    public abstract Integer getNumberOfColumns();
+    public abstract Integer getWidth();
 
     /**
      * Getter method.
      * @return the number of rows.
      */
-    public abstract Integer getNumberOfRows();
+    public abstract Integer getHeight();
 
     /**
      * Create a copy of the this.
@@ -104,8 +120,8 @@ public abstract class Matrix {
      * @return true if the matrix passed as parameter have the same size as this.
      */
     public boolean hasSameSizeAs(Matrix matrix) {
-        return getNumberOfColumns().equals(matrix.getNumberOfColumns())
-                && getNumberOfRows().equals(matrix.getNumberOfRows());
+        return getWidth().equals(matrix.getWidth())
+                && getHeight().equals(matrix.getHeight());
     }
 
     /**
@@ -114,6 +130,6 @@ public abstract class Matrix {
      * @return true if the size of this is compatible with the size of another matrix and false otherwise.
      */
     public boolean hasCompatibleSizeWith(Matrix matrix) {
-        return getNumberOfColumns().equals(matrix.getNumberOfRows());
+        return getWidth().equals(matrix.getHeight());
     }
 }

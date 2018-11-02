@@ -23,8 +23,8 @@ public class CommandFactory {
         commands.put(StreamingKeys.SAVE_FILE, CommandSaveFile::new);
         commands.put(StreamingKeys.MAP_EW_MUL, CommandMapEwMul::new);
         commands.put(StreamingKeys.REDUCE_ADD, CommandReduceAdd::new);
-        commands.put(StreamingKeys.REDUCE_MIN, CommandReduceMin::new);
-        commands.put(StreamingKeys.REDUCE_MAX, CommandReduceMax::new);
+        commands.put(StreamingKeys.REDUCE_FIRST, CommandReduceFirst::new);
+        commands.put(StreamingKeys.REDUCE_LAST, CommandReduceLast::new);
         commands.put(StreamingKeys.SORT_BY, CommandSortBy::new);
         return commands;
     }

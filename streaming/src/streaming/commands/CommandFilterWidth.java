@@ -18,7 +18,7 @@ public class CommandFilterWidth extends Command {
     public CommandFilterWidth(String command) { setCommand(command); }
 
     /**
-     * Add the two last elements of the list.
+     * Filter all the matrices which have not the width specified in the commands' parameters.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.
      * @return true if the session must be closed and false otherwise.
@@ -34,9 +34,9 @@ public class CommandFilterWidth extends Command {
         }
         try {
             // Keep only matrices where the width asked.
-            int width = Integer.valueOf(parameters[1]);
+            final int width = Integer.valueOf(parameters[1]);
             CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
-                s = s.filter(m -> m.getNumberOfColumns() == width);
+                s = s.filter(m -> m.getWidth() == width);
                 CurrentStream.getInstance().setCurrentStream(s);
             });
         } catch (Exception e) {
