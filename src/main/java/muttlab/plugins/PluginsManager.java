@@ -1,5 +1,6 @@
 package muttlab.plugins;
 
+import muttlab.config.DefaultConfig;
 import muttlab.languages.Language;
 import muttlab.languages.LanguageObservable;
 import muttlab.loggers.LoggingLevel;
@@ -12,7 +13,6 @@ import java.util.*;
 public class PluginsManager implements Observer {
 
     private List<Plugin> plugins;
-    private String plugins_dir = "./bin/plugins/";
 
     /**
      * Singleton design pattern.
@@ -24,7 +24,7 @@ public class PluginsManager implements Observer {
     private PluginsManager() {
         plugins = new ArrayList<>();
         try {
-            List<String> jarsName = getListOfJarFiles(plugins_dir);
+            List<String> jarsName = getListOfJarFiles(DefaultConfig.getPluginsDirectory());
             for (String jarName : jarsName) {
                 Object plugin = loadPluginFrom(jarName);
                 if (plugin instanceof Plugin) {
@@ -43,7 +43,7 @@ public class PluginsManager implements Observer {
     public Object loadPluginFrom(String jarName) throws Exception{
         String pluginName = jarName.substring(0, jarName.length() - 4);
         PluginClassLoader cl = new PluginClassLoader();
-        cl.addFile(plugins_dir + pluginName + ".jar");
+        cl.addFile(DefaultConfig.getPluginsDirectory() + pluginName + ".jar");
         Class pluginClass = cl.loadClass(pluginName + ".Plugin");
         return pluginClass.newInstance();
     }
@@ -55,7 +55,7 @@ public class PluginsManager implements Observer {
      */
     public List<String> getListOfJarFiles(String directory) {
         final File folder = new File(directory);
-        List<String> jarsName = new ArrayList<String>();
+        List<String> jarsName = new ArrayList<>();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isFile() && fileEntry.getName().matches("^.*\\.jar$")) {
                 jarsName.add(fileEntry.getName());

@@ -15,7 +15,9 @@ public abstract class Parser {
      * Constructor.
      * @param is : The input stream to read from.
      */
-    public Parser(InputStream is) { inputReader = new Scanner(is); }
+    public Parser(InputStream is) {
+        inputReader = new Scanner(is);
+    }
 
     /**
      * Return the next command to execute.
@@ -33,11 +35,11 @@ public abstract class Parser {
 
     /**
      * Setter method.
-     * @param str : the new input stream.
+     * @param is : the new input stream.
      * @return this
      */
-    protected Parser setInputStream(InputStream str) {
-        this.inputReader = new Scanner(str);
+    protected Parser setInputStream(InputStream is) {
+        this.inputReader = new Scanner(is);
         return this;
     }
 }

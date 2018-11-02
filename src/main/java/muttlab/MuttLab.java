@@ -11,7 +11,6 @@ import muttlab.parsing.SimpleParser;
 import muttlab.plugins.Command;
 import muttlab.plugins.Plugin;
 import muttlab.plugins.PluginsManager;
-import muttlab.ui.TextInterface;
 import muttlab.ui.UserInterface;
 
 import java.util.Iterator;
@@ -19,22 +18,32 @@ import java.util.Stack;
 
 public class MuttLab {
 
-    private UserInterface ui = new TextInterface();
-    private Parser parser = new SimpleParser(ui.getInputStream());
-    private Stack<Element> elements = new Stack<>();
+    private UserInterface ui;
+    private Parser parser;
+    private Stack<Element> elements;
+
+    /**
+     * Constructor.
+     * @param ui: The user interface to use.
+     */
+    public MuttLab(UserInterface ui) {
+        this.ui = ui;
+        this.parser = new SimpleParser(ui.getInputStream());
+        this.elements = new Stack<>();
+    }
 
     /**
      * This function create the links between observable and observers.
      * Then, it execute the user's commands.
      */
-    public void start() {
+    public void startSession() {
         // Make sure that the PluginsManager and UserInterface display messages in english.
         LanguageObservable.get().addObserver(PluginsManager.get());
         LanguageObservable.get().addObserver(MuttLabDictionary.getInstance());
         LanguageObservable.get().changeLanguage(Language.ENGLISH);
         // Execute the user's command.
         ui.printWelcome();
-        executeUserCommands(parser, ui, elements, false);
+        MuttLab.executeUserCommands(parser, ui, elements, false);
         ui.printGoodbye();
     }
 
