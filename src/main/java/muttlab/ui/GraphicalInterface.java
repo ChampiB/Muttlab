@@ -70,7 +70,7 @@ public class GraphicalInterface extends UserInterface {
                     out.write(lastLine.getBytes());
                     out.write('\n');
                 } catch (Exception io) {
-                    Logging.log(LoggingLevel.WARNING, io.getMessage());
+                    // Do nothing.
                 }
             }
         });
