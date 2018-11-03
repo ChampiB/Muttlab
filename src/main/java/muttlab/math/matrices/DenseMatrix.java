@@ -1,9 +1,9 @@
 package muttlab.math.matrices;
 
-import muttlab.MuttLab;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
 import muttlab.exceptions.UserException;
+import muttlab.helpers.ConverterHelper;
 import muttlab.languages.MuttLabKeys;
 
 import java.util.Arrays;
@@ -101,65 +101,6 @@ public class DenseMatrix extends Matrix {
     public Integer getHeight() { return height; }
 
     /**
-     * Load this.data from string.
-     * @param s : The string containing the data.
-     * @return the data.
-     * @throws Exception if string is malformed.
-     */
-    private Float[][] dataFrom(String s) throws Exception {
-        if (s.charAt(0) != '[')
-            throw new Exception("Invalid string format.");
-        s = s.substring(1);
-        if (s.charAt(s.length() - 1) == ']')
-            s = s.substring(0, s.length() - 1);
-        String[] rows = s.split(";");
-        if (rows.length == 0)
-            throw new Exception("Invalid string format.");
-        Float[][] matrix = new Float[rows.length][];
-        int rowsLength = -1;
-        for (int i = 0; i < rows.length; i++) {
-            String[] columnsOfRowI = rows[i].trim().replaceAll(" +", " ").split(" ");
-            if (columnsOfRowI.length == 0)
-                throw new Exception("Invalid string format.");
-            matrix[i] = Arrays.stream(columnsOfRowI).map(Float::valueOf).toArray(Float[]::new);
-            if (i == 0) rowsLength = matrix[i].length;
-            if (rowsLength != matrix[i].length)
-                throw new Exception("Invalid string format.");
-        }
-        return matrix;
-    }
-
-    /**
-     * Load the matrix's data from a csv row.
-     * @param s: one row of the csv file.
-     * @return the matrix's data.
-     * @throws Exception if the row is malformed.
-     */
-    private Float[][] dataFromCSV(String s) throws Exception {
-        // Parse CSV row.
-        Float[] row = Arrays.stream(s.split(","))
-            .map(String::trim)
-            .map(str -> {
-                try {
-                    return Float.valueOf(str);
-                } catch (Exception e) {
-                    return null;
-                }
-            })
-            .toArray(Float[]::new);
-        // Check that the matrix is valid.
-        for (Float elem: row) {
-            if (elem == null) {
-                throw new Exception("Invalid string format");
-            }
-        }
-        // Return the matrix's data.
-        Float[][] data = new Float[1][];
-        data[0] = row;
-        return data;
-    }
-
-    /**
      * Return the sum of all the elements of the matrix.
      * @return the sum.
      */
@@ -199,6 +140,58 @@ public class DenseMatrix extends Matrix {
             }
         }
         return max;
+    }
+
+    /**
+     * Load this.data from string.
+     * @param s : The string containing the data.
+     * @return the data.
+     * @throws Exception if string is malformed.
+     */
+    private Float[][] dataFrom(String s) throws Exception {
+        if (s.charAt(0) != '[')
+            throw new Exception();
+        s = s.substring(1);
+        if (s.charAt(s.length() - 1) == ']')
+            s = s.substring(0, s.length() - 1);
+        String[] rows = s.split(";");
+        if (rows.length == 0)
+            throw new Exception();
+        Float[][] matrix = new Float[rows.length][];
+        int rowsLength = -1;
+        for (int i = 0; i < rows.length; i++) {
+            String[] columnsOfRowI = rows[i].trim().replaceAll(" +", " ").split(" ");
+            if (columnsOfRowI.length == 0)
+                throw new Exception();
+            matrix[i] = Arrays.stream(columnsOfRowI).map(Float::valueOf).toArray(Float[]::new);
+            if (i == 0) rowsLength = matrix[i].length;
+            if (rowsLength != matrix[i].length)
+                throw new Exception();
+        }
+        return matrix;
+    }
+
+    /**
+     * Load the matrix's data from a csv row.
+     * @param s: one row of the csv file.
+     * @return the matrix's data.
+     * @throws Exception if the row is malformed.
+     */
+    private Float[][] dataFromCSV(String s) throws Exception {
+        // Parse CSV row.
+        Float[] row = Arrays.stream(s.split(","))
+                .map(String::trim)
+                .map(ConverterHelper::toFloatOrNull)
+                .toArray(Float[]::new);
+        // Check that the matrix is valid.
+        for (Float elem: row) {
+            if (elem == null)
+                throw new Exception();
+        }
+        // Return the matrix's data.
+        Float[][] data = new Float[1][];
+        data[0] = row;
+        return data;
     }
 
     /**
@@ -344,7 +337,8 @@ public class DenseMatrix extends Matrix {
      * @throws Exception if an error occurred.
      */
     public void mul(Matrix matrix) throws Exception {
-        if (!hasCompatibleSizeWith(matrix)) throw new InvalidMatrixSize();
+        if (!hasCompatibleSizeWith(matrix))
+            throw new InvalidMatrixSize();
         DenseMatrix result = newEmptyMatrix(getHeight(), matrix.getWidth());
         for (int r = 0; r < getHeight(); r++) {
             for (int c = 0; c < matrix.getWidth(); c++) {
@@ -376,7 +370,8 @@ public class DenseMatrix extends Matrix {
      * @throws Exception if an error occurred.
      */
     public void sub(Matrix matrix) throws Exception {
-        if (!hasSameSizeAs(matrix)) throw new InvalidMatrixSize();
+        if (!hasSameSizeAs(matrix))
+            throw new InvalidMatrixSize();
         for (Integer column = 0; column < matrix.getWidth(); column++) {
             for (Integer row = 0; row < matrix.getHeight(); row++) {
                 set(row, column, get(row, column) - matrix.get(row, column));
