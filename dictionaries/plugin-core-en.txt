@@ -1,5 +1,5 @@
 COMMAND_NAME_NOT_FOUND_HELP_MESSAGE=You are using MatBench.\n\nYour command words are:\n   show [ + - * .* dup help script quit
-GLOBAL_HELP_MESSAGE=The following commands are available (use 'help <command_name>' to get further information):\n
+GLOBAL_HELP_MESSAGE=The following commands are available (use 'help <command_name>' to get further information):
 QUIT_ERROR_MESSAGE=Quit what?
 NEW_MATRIX_ERROR_MESSAGE=what's the matrix?
 FILE_NAME_NOT_FOUND_ERROR_MESSAGE=File not found.
