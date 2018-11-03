@@ -66,6 +66,24 @@ public abstract class Matrix {
     public abstract Matrix copy();
 
     /**
+     * Return the sum of all the elements of the matrix.
+     * @return the sum.
+     */
+    public abstract Float sum();
+
+    /**
+     * Return the smallest element of the matrix.
+     * @return the smallest element.
+     */
+    public abstract Float min();
+
+    /**
+     * Return the biggest element of the matrix.
+     * @return the biggest element.
+     */
+    public abstract Float max();
+
+    /**
      * Load this from string.
      * @param s : The string containing the matrix.
      * @return this.

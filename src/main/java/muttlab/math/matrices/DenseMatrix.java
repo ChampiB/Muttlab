@@ -3,7 +3,6 @@ package muttlab.math.matrices;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class DenseMatrix extends Matrix {
@@ -157,6 +156,47 @@ public class DenseMatrix extends Matrix {
         return data;
     }
 
+    /**
+     * Return the sum of all the elements of the matrix.
+     * @return the sum.
+     */
+    public Float sum() {
+        Float sum = 0F;
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                sum += data[i][j];
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * Return the smallest element of the matrix.
+     * @return the smallest element.
+     */
+    public Float min() {
+        Float min = Float.MAX_VALUE;
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                min = Float.min(min, data[i][j]);
+            }
+        }
+        return min;
+    }
+
+    /**
+     * Return the biggest element of the matrix.
+     * @return the biggest element.
+     */
+    public Float max() {
+        Float max = Float.MIN_VALUE;
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                max = Float.max(max, data[i][j]);
+            }
+        }
+        return max;
+    }
 
     /**
      * Load this from array of float.

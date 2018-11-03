@@ -108,6 +108,7 @@ public class CommandReduceAdd extends Command {
         mapping.put(rpad, CommandReduceAdd::padRightReducer);
         return mapping;
     }
+
     /**
      * Return the reduce function (reducer) corresponding to the key.
      * @param reducerName: the key of the reducer.
@@ -147,7 +148,6 @@ public class CommandReduceAdd extends Command {
                 ui, e.getMessage(), StreamingDictionary.getInstance(), false
             );
         }
-
         return false;
     }
 }
