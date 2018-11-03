@@ -4,6 +4,7 @@ import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
 import muttlab.helpers.DisplayHelper;
 import muttlab.helpers.FileHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -42,7 +43,7 @@ public class CommandSave extends Command {
             fileWriter.flush();
         } catch (IOException e) {
             DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.FAIL_TO_WRITE_IN_FILE.toString(), CoreDictionary.getInstance(), false
+                ui, MuttLabKeys.FAIL_TO_WRITE_IN_FILE.toString(), CoreDictionary.getInstance(), false
             );
         }
         return false;

@@ -2,6 +2,7 @@ package streaming.commands;
 
 import muttlab.helpers.DisplayHelper;
 import muttlab.helpers.FileHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Element;
@@ -53,7 +54,7 @@ public class CommandSaveFile extends Command {
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 2) {
             return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
             );
         }
         try {
@@ -66,7 +67,7 @@ public class CommandSaveFile extends Command {
             CurrentStream.getInstance().setCurrentStream(null);
         } catch (IOException e) {
             DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.FAIL_TO_WRITE_IN_FILE.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.FAIL_TO_WRITE_IN_FILE.toString(), StreamingDictionary.getInstance(), false
             );
         }
         return false;

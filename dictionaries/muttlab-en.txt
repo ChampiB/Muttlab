@@ -1,3 +1,9 @@
 UNKNOWN_COMMAND_MESSAGE=Command is unknown.
 WELCOME_MESSAGE=\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱ \n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏   Welcome to MuttLab!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏(textart4u.blogspot.com)\n\nMuttLab is an amazing new, matrix calculator.\nType 'help' if you need help.\n
 GOODBYE_MESSAGE=Thank you for using MuttLab\n\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱\n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏     hee, hee, hee!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏        ▕\nThank you for using MuttLab.  Good bye.\n
+NOT_ENOUGH_ELEMENT_IN_QUEUE=There is not enough matrix in the queue.
+INVALID_OPERATION_ERROR_MESSAGE=The operation is not valid.
+FAIL_TO_WRITE_IN_FILE=Can't write in file.
+NOT_ENOUGH_PARAMETERS=Not enough parameters.
+NOT_VALID_FLOAT=Float is not valid.
+NOT_VALID_INT=Int is not valid.

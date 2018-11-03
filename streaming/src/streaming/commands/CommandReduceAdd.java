@@ -1,6 +1,7 @@
 package streaming.commands;
 
 import muttlab.helpers.DisplayHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
@@ -130,14 +131,14 @@ public class CommandReduceAdd extends Command {
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 2) {
             return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
             );
         }
         try {
             // Reduce all the matrix of the stream by summing them.
             final BinaryOperator<Matrix> reducer = getReducer(parameters[1]);
             if (reducer == null)
-                throw new Exception(StreamingKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
+                throw new Exception(MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
             CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
                 List<Matrix> a = new ArrayList<>();
                 a.add(s.reduce(null, reducer));

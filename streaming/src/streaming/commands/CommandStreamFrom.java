@@ -1,6 +1,7 @@
 package streaming.commands;
 
 import muttlab.helpers.DisplayHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Element;
@@ -52,7 +53,7 @@ public class CommandStreamFrom extends Command {
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 2) {
             return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
             );
         }
         // Load the matrix for the file and change the current stream.

@@ -1,6 +1,7 @@
 package streaming.commands;
 
 import muttlab.helpers.DisplayHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -29,7 +30,7 @@ public class CommandFilterWidth extends Command {
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 2) {
             return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
             );
         }
         try {
@@ -41,7 +42,7 @@ public class CommandFilterWidth extends Command {
             });
         } catch (Exception e) {
             DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_VALID_INT.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_VALID_INT.toString(), StreamingDictionary.getInstance(), false
             );
         }
         return false;

@@ -3,6 +3,7 @@ package core.commands;
 import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
 import muttlab.helpers.DisplayHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -26,7 +27,7 @@ public class CommandDup extends Command {
         // Check the number of element in the stack.
         if (elements.size() == 0) {
             return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.NOT_ENOUGH_ELEMENT_IN_QUEUE.toString(), CoreDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_ELEMENT_IN_QUEUE.toString(), CoreDictionary.getInstance(), false
             );
         }
         // Duplicate the last matrix of the stack.
@@ -34,7 +35,7 @@ public class CommandDup extends Command {
             elements.push(elements.peek().copy());
         } catch (Exception e) {
             return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.INVALID_OPERATION_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
+                ui, MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
             );
         }
         return false;

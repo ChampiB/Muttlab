@@ -4,16 +4,11 @@ package streaming.languages;
  * List of available message.
  */
 public enum StreamingKeys {
-    NOT_ENOUGH_ELEMENT_IN_QUEUE,
-    INVALID_OPERATION_ERROR_MESSAGE,
+    CANT_STREAM_THE_FILE,
     REDUCER_NAME_FIRST,
     REDUCER_NAME_LPAD,
     REDUCER_NAME_RPAD,
-    CANT_STREAM_THE_FILE,
     STREAM_FROM,
-    FAIL_TO_WRITE_IN_FILE,
-    NOT_ENOUGH_PARAMETERS,
-    NOT_VALID_INT,
     REDUCE_ADD,
     REDUCE_FIRST,
     REDUCE_LAST,

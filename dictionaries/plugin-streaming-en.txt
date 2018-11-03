@@ -1,8 +1,4 @@
-NOT_ENOUGH_ELEMENT_IN_QUEUE=There is not enough matrix in the queue.
-INVALID_OPERATION_ERROR_MESSAGE=The operation is not valid.
 CANT_STREAM_THE_FILE=Can't create stream the file.
-NOT_VALID_INT=Int is not valid.
-FAIL_TO_WRITE_IN_FILE=Can't write in file.
 REDUCER_NAME_FIRST=first
 REDUCER_NAME_LPAD=pad_l
 REDUCER_NAME_RPAD=pad_r

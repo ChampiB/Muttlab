@@ -1,6 +1,7 @@
 package streaming.commands;
 
 import muttlab.helpers.DisplayHelper;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
@@ -60,14 +61,14 @@ public class CommandSortBy extends Command {
         String[] parameters = getCommand().split(" ");
         if (parameters.length < 2) {
             return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
+                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
             );
         }
         try {
             // Reduce all the matrix of the stream by summing them.
             final Comparator<Matrix> sorter = getSorter(parameters[1]);
             if (sorter == null)
-                throw new Exception(StreamingKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
+                throw new Exception(MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
             CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
                 CurrentStream.getInstance().setCurrentStream(s.sorted(sorter));
             });
