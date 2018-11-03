@@ -1,6 +1,8 @@
 package streaming;
 
+import muttlab.exceptions.UserException;
 import muttlab.math.matrices.Matrix;
+import streaming.languages.StreamingKeys;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -23,6 +25,16 @@ public class CurrentStream {
      */
     public void setCurrentStream(Stream<Matrix> s) {
         stream = Optional.ofNullable(s);
+    }
+
+    /**
+     * Check if there is one available stream.
+     * @throws Exception if there is no stream currently available.
+     */
+    public static void checkIsPresent() throws Exception {
+        if (!getInstance().getCurrentStream().isPresent()) {
+            throw new UserException(StreamingKeys.CURRENT_STREAM_IS_NOT_PRESENT.toString());
+        }
     }
 
     /**

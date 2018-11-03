@@ -4,7 +4,7 @@ package streaming.languages;
  * List of available message.
  */
 public enum StreamingKeys {
-    CANT_STREAM_THE_FILE,
+    CURRENT_STREAM_IS_NOT_PRESENT,
     REDUCER_NAME_FIRST,
     REDUCER_NAME_LPAD,
     REDUCER_NAME_RPAD,

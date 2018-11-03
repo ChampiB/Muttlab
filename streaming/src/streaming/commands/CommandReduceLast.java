@@ -28,6 +28,8 @@ public class CommandReduceLast extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+        // Check if the current stream is present.
+        CurrentStream.checkIsPresent();
         // Reduce the list of matrices by taking the last.
         CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
             List<Matrix> a = new ArrayList<>();

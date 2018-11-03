@@ -43,6 +43,8 @@ public class CommandSaveFile extends Command {
      */
     @Override
     public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+        // Check if the current stream is present.
+        CurrentStream.checkIsPresent();
         // Check that there is at least one parameter.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 2, 2);

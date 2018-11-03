@@ -1,4 +1,4 @@
-CANT_STREAM_THE_FILE=Can't create stream the file.
+CURRENT_STREAM_IS_NOT_PRESENT=There is currently no stream available.
 REDUCER_NAME_FIRST=first
 REDUCER_NAME_LPAD=pad_l
 REDUCER_NAME_RPAD=pad_r
