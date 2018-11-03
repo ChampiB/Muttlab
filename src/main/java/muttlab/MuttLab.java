@@ -70,7 +70,7 @@ public class MuttLab {
                 Command command = parser.getNextCommand(plugins);
                 if (displayCommand)
                     ui.println(command.getCommand());
-                finished = command.execute(ui, elements);
+                finished = command.exec(ui, elements);
             } catch (java.util.NoSuchElementException e){
                 endOfStream = true;
             } catch (UnknownCommand e) {

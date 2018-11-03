@@ -1,9 +1,6 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.helpers.DisplayHelper;
-import muttlab.languages.MuttLabKeys;
+import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -23,21 +20,11 @@ public class CommandDup extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check the number of element in the stack.
-        if (elements.size() == 0) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_ELEMENT_IN_QUEUE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        CommandHelper.checkAtLeastInTheStack(elements, 1);
         // Duplicate the last matrix of the stack.
-        try {
-            elements.push(elements.peek().copy());
-        } catch (Exception e) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        elements.push(elements.peek().copy());
         return false;
     }
 }

@@ -1,5 +1,7 @@
 package streaming.commands;
 
+import muttlab.exceptions.UserException;
+import muttlab.helpers.CommandHelper;
 import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
@@ -45,8 +47,11 @@ public class CommandSortBy extends Command {
      * @param sorterName: the key of the sorter.
      * @return the sorter.
      */
-    private Comparator<Matrix> getSorter(String sorterName) {
-        return mapping.get(sorterName);
+    private Comparator<Matrix> getSorter(String sorterName) throws Exception {
+        Comparator<Matrix> sorter = mapping.get(sorterName);
+        if (sorter == null)
+            throw new UserException(MuttLabKeys.UNSUPPORTED_COMMAND_PARAMETER.toString());
+        return sorter;
     }
 
     /**
@@ -56,27 +61,15 @@ public class CommandSortBy extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
-        try {
-            // Reduce all the matrix of the stream by summing them.
-            final Comparator<Matrix> sorter = getSorter(parameters[1]);
-            if (sorter == null)
-                throw new Exception(MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
-            CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
-                CurrentStream.getInstance().setCurrentStream(s.sorted(sorter));
-            });
-        } catch (Exception e) {
-            DisplayHelper.printErrAndReturn(
-                ui, e.getMessage(), StreamingDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
+        // Reduce all the matrix of the stream by summing them.
+        final Comparator<Matrix> sorter = getSorter(args[1]);
+        CurrentStream.getInstance().getCurrentStream().ifPresent(s ->
+            CurrentStream.getInstance().setCurrentStream(s.sorted(sorter))
+        );
         return false;
     }
 }

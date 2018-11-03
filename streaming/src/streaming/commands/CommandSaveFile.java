@@ -1,25 +1,18 @@
 package streaming.commands;
 
-import muttlab.helpers.DisplayHelper;
+import muttlab.helpers.CommandHelper;
 import muttlab.helpers.FileHelper;
-import muttlab.languages.MuttLabKeys;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Element;
-import muttlab.math.elements.MatrixWrapper;
 import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
-import streaming.languages.StreamingDictionary;
-import streaming.languages.StreamingKeys;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class CommandSaveFile extends Command {
     /**
@@ -49,27 +42,17 @@ public class CommandSaveFile extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
-        try {
-            // Open the output file.
-            final FileWriter fileWriter = FileHelper.openWriter(parameters[1]);
-            // Save all the matrix of the stream in the stack.
-            CurrentStream.getInstance().getCurrentStream().ifPresent(s ->
-                s.forEach(m -> saveMatrixInFile(fileWriter, m))
-            );
-            CurrentStream.getInstance().setCurrentStream(null);
-        } catch (IOException e) {
-            DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.FAIL_TO_WRITE_IN_FILE.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
+        // Open the output file.
+        final FileWriter fileWriter = FileHelper.openWriter(args[1]);
+        // Save all the matrix of the stream in the stack.
+        CurrentStream.getInstance().getCurrentStream().ifPresent(s ->
+            s.forEach(m -> saveMatrixInFile(fileWriter, m))
+        );
+        CurrentStream.getInstance().setCurrentStream(null);
         return false;
     }
 }

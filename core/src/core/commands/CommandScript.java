@@ -1,9 +1,7 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
 import muttlab.MuttLab;
-import muttlab.helpers.DisplayHelper;
+import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.parsing.Parser;
 import muttlab.parsing.SimpleParser;
@@ -12,7 +10,6 @@ import muttlab.ui.UserInterface;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Stack;
 
 public class CommandScript extends Command {
@@ -31,30 +28,13 @@ public class CommandScript extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 1) {
-            return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.FILE_NAME_NOT_FOUND_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Execute the script command.
-        boolean finished = false;
-        FileInputStream fileReader = null;
-        try {
-            fileReader = new FileInputStream(new File(parameters[1]));
-            Parser parser = new SimpleParser(fileReader);
-            finished = MuttLab.executeUserCommands(parser, ui, elements, true);
-        } catch (IOException e) {
-            DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.SAVE_CANT_WRITE_IN_FILE_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        } finally {
-            if (fileReader != null) {
-                try { fileReader.close(); } catch (Exception e) {}
-            }
-        }
-        return finished;
+        FileInputStream fileReader = new FileInputStream(new File(args[1]));
+        Parser parser = new SimpleParser(fileReader);
+        return MuttLab.executeUserCommands(parser, ui, elements, true);
     }
 }

@@ -1,17 +1,12 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.helpers.DisplayHelper;
+import muttlab.helpers.CommandHelper;
 import muttlab.helpers.FileHelper;
-import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Stack;
 
 public class CommandSave extends Command {
@@ -28,24 +23,14 @@ public class CommandSave extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 1) {
-            return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.FILE_NAME_NOT_FOUND_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Save the last matrix of the stack.
-        try {
-            final FileWriter fileWriter = FileHelper.openWriter(parameters[1]);
-            fileWriter.write(elements.peek().asString());
-            fileWriter.flush();
-        } catch (IOException e) {
-            DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.FAIL_TO_WRITE_IN_FILE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        final FileWriter fileWriter = FileHelper.openWriter(args[1]);
+        fileWriter.write(elements.peek().asString());
+        fileWriter.flush();
         return false;
     }
 }

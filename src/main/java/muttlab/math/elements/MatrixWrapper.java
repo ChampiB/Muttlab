@@ -1,5 +1,7 @@
 package muttlab.math.elements;
 
+import muttlab.exceptions.UserException;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.math.matrices.DenseMatrix;
 import muttlab.math.matrices.Matrix;
@@ -60,7 +62,7 @@ public class MatrixWrapper extends Element {
         if (element instanceof MatrixWrapper) {
             m.pointWiseMul(((MatrixWrapper) element).m);
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -77,7 +79,7 @@ public class MatrixWrapper extends Element {
         } else if (element instanceof ScalarWrapper) {
             m.mul(((ScalarWrapper) element).getScalar());
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -92,7 +94,7 @@ public class MatrixWrapper extends Element {
         if (element instanceof MatrixWrapper) {
             m.sub(((MatrixWrapper) element).getMatrix());
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -107,7 +109,7 @@ public class MatrixWrapper extends Element {
         if (element instanceof MatrixWrapper) {
             m.add(((MatrixWrapper) element).getMatrix());
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }

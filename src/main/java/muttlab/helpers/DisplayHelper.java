@@ -12,7 +12,7 @@ public class DisplayHelper {
      * @param r: the return value.
      * @return 'r'.
      */
-    public static boolean printErrAndReturn(UserInterface ui, String key, DictionaryLoader dic, boolean r) {
+    public static boolean printlnErr(UserInterface ui, String key, DictionaryLoader dic, boolean r) {
         ui.printlnErr(dic.getValue(key));
         return r;
     }
@@ -25,7 +25,7 @@ public class DisplayHelper {
      * @param r: the return value.
      * @return 'r'.
      */
-    public static boolean printAndReturn(UserInterface ui, String key, DictionaryLoader dic, boolean r) {
+    public static boolean println(UserInterface ui, String key, DictionaryLoader dic, boolean r) {
         ui.println(dic.getValue(key));
         return r;
     }

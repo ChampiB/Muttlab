@@ -1,7 +1,6 @@
 package streaming.commands;
 
-import muttlab.helpers.DisplayHelper;
-import muttlab.languages.MuttLabKeys;
+import muttlab.helpers.CommandHelper;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Element;
@@ -10,10 +9,7 @@ import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
-import streaming.languages.StreamingDictionary;
-import streaming.languages.StreamingKeys;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -48,26 +44,16 @@ public class CommandStreamFrom extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Load the matrix for the file and change the current stream.
-        try {
-            Stream s = Files
-                .lines(Paths.get(parameters[1]))
-                .map(this::loadMatrix)
-                .filter(Objects::nonNull);
-            CurrentStream.getInstance().setCurrentStream(s);
-        } catch (IOException e) {
-            return DisplayHelper.printErrAndReturn(
-                ui, StreamingKeys.CANT_STREAM_THE_FILE.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
+        Stream<Matrix> s = Files
+            .lines(Paths.get(args[1]))
+            .map(this::loadMatrix)
+            .filter(Objects::nonNull);
+        CurrentStream.getInstance().setCurrentStream(s);
         return false;
     }
 }

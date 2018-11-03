@@ -1,6 +1,7 @@
 package streaming.commands;
 
-import muttlab.helpers.DisplayHelper;
+import muttlab.exceptions.UserException;
+import muttlab.helpers.CommandHelper;
 import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.math.matrices.Matrix;
@@ -115,7 +116,10 @@ public class CommandReduceAdd extends Command {
      * @param reducerName: the key of the reducer.
      * @return the reducer.
      */
-    private BinaryOperator<Matrix> getReducer(String reducerName) {
+    private BinaryOperator<Matrix> getReducer(String reducerName) throws Exception {
+        BinaryOperator<Matrix> reducer = mapping.get(reducerName);
+        if (reducer == null)
+            throw new UserException(MuttLabKeys.UNSUPPORTED_COMMAND_PARAMETER.toString());
         return mapping.get(reducerName);
     }
 
@@ -126,29 +130,17 @@ public class CommandReduceAdd extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
-        try {
-            // Reduce all the matrix of the stream by summing them.
-            final BinaryOperator<Matrix> reducer = getReducer(parameters[1]);
-            if (reducer == null)
-                throw new Exception(MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString());
-            CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
-                List<Matrix> a = new ArrayList<>();
-                a.add(s.reduce(null, reducer));
-                CurrentStream.getInstance().setCurrentStream(a.stream().filter(Objects::nonNull));
-            });
-        } catch (Exception e) {
-            DisplayHelper.printErrAndReturn(
-                ui, e.getMessage(), StreamingDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
+        // Reduce all the matrix of the stream by summing them.
+        final BinaryOperator<Matrix> reducer = getReducer(args[1]);
+        CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
+            List<Matrix> a = new ArrayList<>();
+            a.add(s.reduce(null, reducer));
+            CurrentStream.getInstance().setCurrentStream(a.stream().filter(Objects::nonNull));
+        });
         return false;
     }
 }

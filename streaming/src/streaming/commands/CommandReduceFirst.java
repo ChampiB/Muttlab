@@ -1,5 +1,6 @@
 package streaming.commands;
 
+import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
@@ -27,7 +28,10 @@ public class CommandReduceFirst extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+        // Check that there is at least one parameter.
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Reduce the list of matrices by taking the first.
         CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
             List<Matrix> a = new ArrayList<>();

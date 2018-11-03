@@ -1,9 +1,6 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.helpers.DisplayHelper;
-import muttlab.languages.MuttLabKeys;
+import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -24,25 +21,15 @@ public class CommandAdd extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check the number of element in the stack.
-        if (elements.size() < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_ELEMENT_IN_QUEUE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        CommandHelper.checkAtLeastInTheStack(elements, 2);
         // Compute the addition between the two last elements of the stack.
-        try {
-            Element e1 = elements.pop();
-            Element e2 = elements.pop();
-            Element res = e2.add(e1);
-            elements.push(res);
-            ui.println(res.asString());
-        } catch (Exception e) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.INVALID_OPERATION_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        Element e1 = elements.pop();
+        Element e2 = elements.pop();
+        Element res = e2.add(e1);
+        elements.push(res);
+        ui.println(res.asString());
         return false;
     }
 }

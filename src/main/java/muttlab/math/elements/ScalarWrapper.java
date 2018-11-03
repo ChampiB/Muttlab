@@ -1,5 +1,7 @@
 package muttlab.math.elements;
 
+import muttlab.exceptions.UserException;
+import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 
 public class ScalarWrapper extends Element {
@@ -36,7 +38,11 @@ public class ScalarWrapper extends Element {
      * @throws Exception if an error occurred.
      */
     public Element from(String string) throws Exception {
-        scalar = Float.valueOf(string);
+        try {
+            scalar = Float.valueOf(string);
+        } catch (Exception e) {
+            throw new UserException(MuttLabKeys.NOT_VALID_FLOAT.toString());
+        }
         return this;
     }
 
@@ -62,7 +68,7 @@ public class ScalarWrapper extends Element {
             mw.getMatrix().mul(scalar);
             return mw;
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -77,7 +83,7 @@ public class ScalarWrapper extends Element {
         if (element instanceof ScalarWrapper) {
             scalar *= ((ScalarWrapper) element).getScalar();
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -92,7 +98,7 @@ public class ScalarWrapper extends Element {
         if (element instanceof ScalarWrapper) {
             scalar += ((ScalarWrapper) element).getScalar();
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }
@@ -107,7 +113,7 @@ public class ScalarWrapper extends Element {
         if (element instanceof ScalarWrapper) {
             scalar -= ((ScalarWrapper) element).getScalar();
         } else {
-            throw new UnsupportedOperationException();
+            throw new UserException(MuttLabKeys.UNSUPPORTED_OPERATION.toString());
         }
         return this;
     }

@@ -1,8 +1,6 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
-import muttlab.helpers.DisplayHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
@@ -24,13 +22,12 @@ public class CommandQuit extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is no parameter.
         if (getCommand().split(" ").length > 1) {
-            return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.QUIT_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
+            throw new Exception(CoreKeys.QUIT_ERROR_MESSAGE.toString());
         }
-        return true; // Signal that we want to quit.
+        // Signal that we want to quit.
+        return true;
     }
 }

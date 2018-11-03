@@ -1,13 +1,11 @@
 package streaming.commands;
 
-import muttlab.helpers.DisplayHelper;
-import muttlab.languages.MuttLabKeys;
+import muttlab.helpers.CommandHelper;
+import muttlab.helpers.ConverterHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
-import streaming.languages.StreamingDictionary;
-import streaming.languages.StreamingKeys;
 
 import java.util.Stack;
 
@@ -25,26 +23,16 @@ public class CommandFilterWidth extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Check that there is at least one parameter.
-        String[] parameters = getCommand().split(" ");
-        if (parameters.length < 2) {
-            return DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_ENOUGH_PARAMETERS.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
-        try {
-            // Keep only matrices where the width asked.
-            final int width = Integer.valueOf(parameters[1]);
-            CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
-                s = s.filter(m -> m.getWidth() == width);
-                CurrentStream.getInstance().setCurrentStream(s);
-            });
-        } catch (Exception e) {
-            DisplayHelper.printErrAndReturn(
-                ui, MuttLabKeys.NOT_VALID_INT.toString(), StreamingDictionary.getInstance(), false
-            );
-        }
+        String[] args = getCommand().split(" ");
+        CommandHelper.checkNumberOfParameters(args, 2, 2);
+        // Keep only matrices where the width asked.
+        final int width = ConverterHelper.toInt(args[1]);
+        CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
+            s = s.filter(m -> m.getWidth() == width);
+            CurrentStream.getInstance().setCurrentStream(s);
+        });
         return false;
     }
 }

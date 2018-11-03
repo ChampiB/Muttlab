@@ -24,8 +24,8 @@ public class CommandHelp extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
-        return DisplayHelper.printAndReturn(
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+        return DisplayHelper.println(
             ui, CoreKeys.HELP_MESSAGE.toString(), CoreDictionary.getInstance(), false
         );
     }

@@ -1,7 +1,10 @@
 package muttlab.math.matrices;
 
+import muttlab.MuttLab;
 import muttlab.exceptions.InvalidMatrixSize;
 import muttlab.exceptions.MatrixElementDoesNotExist;
+import muttlab.exceptions.UserException;
+import muttlab.languages.MuttLabKeys;
 
 import java.util.Arrays;
 
@@ -211,6 +214,20 @@ public class DenseMatrix extends Matrix {
     }
 
     /**
+     * Load the matrix from all the different formats supported.
+     * @param s: the string representation of the matrix.
+     * @return the data of the matrix.
+     * @throws Exception if the loading failed.
+     */
+    private Float[][] fromFormats(String s) throws Exception {
+        try {
+            return dataFrom(s);
+        } catch (Exception e) {
+            return dataFromCSV(s);
+        }
+    }
+
+    /**
      * Load this from string.
      * @param s : The string containing the matrix.
      * @return this.
@@ -218,12 +235,14 @@ public class DenseMatrix extends Matrix {
      */
     public Matrix from(String s) throws Exception {
         try {
-            data = dataFrom(s);
+            data = fromFormats(s);
+            height = data.length;
+            width = data[0].length;
+        } catch (UserException e) {
+            throw e;
         } catch (Exception e) {
-            data = dataFromCSV(s);
+            throw new UserException(MuttLabKeys.NOT_VALID_MATRIX.toString());
         }
-        height = data.length;
-        width = data[0].length;
         return this;
     }
 

@@ -1,14 +1,10 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.helpers.DisplayHelper;
 import muttlab.math.Element;
 import muttlab.math.elements.MatrixWrapper;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 
-import java.util.List;
 import java.util.Stack;
 
 public class CommandNewMatrix extends Command {
@@ -25,15 +21,9 @@ public class CommandNewMatrix extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Add a matrix in the stack.
-        try {
-            elements.push(new MatrixWrapper().from(getCommand()));
-        } catch (Exception e) {
-            return DisplayHelper.printErrAndReturn(
-                ui, CoreKeys.NEW_MATRIX_ERROR_MESSAGE.toString(), CoreDictionary.getInstance(), false
-            );
-        }
+        elements.push(new MatrixWrapper().from(getCommand()));
         return false;
     }
 }

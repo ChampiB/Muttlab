@@ -27,7 +27,7 @@ public class CommandReduceLast extends Command {
      * @return true if the session must be closed and false otherwise.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) {
+    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
         // Reduce the list of matrices by taking the last.
         CurrentStream.getInstance().getCurrentStream().ifPresent(s -> {
             List<Matrix> a = new ArrayList<>();
