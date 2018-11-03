@@ -6,6 +6,8 @@ import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
+import streaming.languages.StreamingDictionary;
+import streaming.languages.StreamingKeys;
 
 import java.util.Objects;
 import java.util.Stack;
@@ -16,6 +18,17 @@ public class CommandMapEwMul extends Command {
      * @param command : The command line.
      */
     public CommandMapEwMul(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.MAP_EW_MUL.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.MAP_EW_MUL_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Multiply element wise all the matrix of the stream.

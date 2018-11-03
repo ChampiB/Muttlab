@@ -22,6 +22,17 @@ public class CommandReduceFirst extends Command {
     public CommandReduceFirst(String command) { setCommand(command); }
 
     /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.REDUCE_FIRST.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.REDUCE_FIRST_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
+
+    /**
      * Reduce the list of matrices by taking the first.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.

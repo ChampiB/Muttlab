@@ -3,6 +3,8 @@ package muttlab.plugins;
 import muttlab.exceptions.UnknownCommand;
 import muttlab.languages.Language;
 
+import java.util.stream.Stream;
+
 public abstract class Plugin {
 
     /**
@@ -20,6 +22,12 @@ public abstract class Plugin {
      * @throws UnknownCommand if the command is not supported by the plugin.
      */
     public abstract Command getCommand(String name, String command) throws UnknownCommand;
+
+    /**
+     * Getter method.
+     * @return the list of the available commands' name
+     */
+    public abstract Stream<String> getAvailableCommandsName();
 
     /**
      * Getter method.

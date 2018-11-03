@@ -2,10 +2,12 @@ package streaming;
 
 import muttlab.plugins.Command;
 import streaming.commands.*;
+import streaming.languages.StreamingDictionary;
 import streaming.languages.StreamingKeys;
 
 import java.util.HashMap;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class CommandFactory {
 
@@ -25,8 +27,18 @@ public class CommandFactory {
         commands.put(StreamingKeys.REDUCE_ADD, CommandReduceAdd::new);
         commands.put(StreamingKeys.REDUCE_FIRST, CommandReduceFirst::new);
         commands.put(StreamingKeys.REDUCE_LAST, CommandReduceLast::new);
-        commands.put(StreamingKeys.SORT_BY, CommandSortBy::new);
+        commands.put(StreamingKeys.SORT, CommandSort::new);
         return commands;
+    }
+
+    /**
+     * Getter method.
+     * @return the list of the available commands' name
+     */
+    public static Stream<String> getAvailableCommandsName() {
+        return commands.keySet().stream()
+                .map(Enum::toString)
+                .map(ks -> StreamingDictionary.getInstance().getValue(ks));
     }
 
     /**

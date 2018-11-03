@@ -7,7 +7,6 @@ import muttlab.loggers.LoggingLevel;
 import muttlab.loggers.Logging;
 
 import java.io.File;
-import java.net.URL;
 import java.util.*;
 
 public class PluginsManager implements Observer {
@@ -29,9 +28,13 @@ public class PluginsManager implements Observer {
                 Object plugin = loadPluginFrom(jarName);
                 if (plugin instanceof Plugin) {
                     plugins.add((Plugin) plugin);
+                } else {
+                    Logging.log(LoggingLevel.WARNING, "Can't load plugin from: " + jarName + ".");
                 }
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            Logging.log(LoggingLevel.ERROR, e.getMessage());
+        }
     }
 
     /**
@@ -71,13 +74,13 @@ public class PluginsManager implements Observer {
      */
     @Override
     public void update(Observable observable, Object o) {
-        if (observable instanceof LanguageObservable && o instanceof Language) {
-            Language language = (Language) o;
-            for (Plugin plugin: plugins) {
-                if (!plugin.setLanguage(language)) {
-                    String message = "Plugin " + plugin.getName() + " does not support language: " + language.toString() + ".";
-                    Logging.log(LoggingLevel.WARNING, message);
-                }
+        if (!(observable instanceof LanguageObservable) || !(o instanceof Language))
+            return;
+        Language language = (Language) o;
+        for (Plugin plugin: plugins) {
+            if (!plugin.setLanguage(language)) {
+                String message = "Plugin " + plugin.getName() + " does not support language: " + language.toString() + ".";
+                Logging.log(LoggingLevel.WARNING, message);
             }
         }
     }

@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.math.Element;
 import muttlab.math.elements.MatrixWrapper;
 import muttlab.plugins.Command;
@@ -13,6 +15,17 @@ public class CommandNewMatrix extends Command {
      * @param command : The command line.
      */
     public CommandNewMatrix(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.NEW_MATRIX.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.NEW_MATRIX_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Parse the text representation of the matrix and add it in the stack.

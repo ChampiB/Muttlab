@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
@@ -13,6 +15,17 @@ public class CommandPointWiseMul extends Command {
      * @param command : The command line.
      */
     public CommandPointWiseMul(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.MUL_ELEMENT_WISE.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.MUL_ELEMENT_WISE_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Multiply point-wise the two last elements of the list.

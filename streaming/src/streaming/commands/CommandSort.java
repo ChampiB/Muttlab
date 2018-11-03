@@ -2,7 +2,6 @@ package streaming.commands;
 
 import muttlab.exceptions.UserException;
 import muttlab.helpers.CommandHelper;
-import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabKeys;
 import muttlab.math.Element;
 import muttlab.math.matrices.Matrix;
@@ -14,7 +13,7 @@ import streaming.languages.StreamingKeys;
 
 import java.util.*;
 
-public class CommandSortBy extends Command {
+public class CommandSort extends Command {
 
     private final Map<String, Comparator<Matrix>> mapping = createMapping();
 
@@ -22,7 +21,18 @@ public class CommandSortBy extends Command {
      * Constructor.
      * @param command : The command line.
      */
-    public CommandSortBy(String command) { setCommand(command); }
+    public CommandSort(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.SORT.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.SORT_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Create the mapping between the reducers' name and the reducers.

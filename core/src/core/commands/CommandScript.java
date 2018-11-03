@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.MuttLab;
 import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
@@ -19,6 +21,17 @@ public class CommandScript extends Command {
      */
     public CommandScript(String command) {
         setCommand(command);
+    }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SCRIPT.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.SCRIPT_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
     }
 
     /**

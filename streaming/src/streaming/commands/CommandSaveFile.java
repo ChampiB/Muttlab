@@ -9,6 +9,8 @@ import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
+import streaming.languages.StreamingDictionary;
+import streaming.languages.StreamingKeys;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,6 +22,17 @@ public class CommandSaveFile extends Command {
      * @param command : The command line.
      */
     public CommandSaveFile(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.SAVE_FILE.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.SAVE_FILE_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Save the matrix into the file.

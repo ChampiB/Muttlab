@@ -6,6 +6,8 @@ import muttlab.exceptions.UnknownCommand;
 import muttlab.languages.Language;
 import muttlab.plugins.Command;
 
+import java.util.stream.Stream;
+
 public class Plugin extends muttlab.plugins.Plugin {
 
     /**
@@ -18,6 +20,15 @@ public class Plugin extends muttlab.plugins.Plugin {
     {
         CoreDictionary.getInstance().setLanguage(language);
         return true;
+    }
+
+    /**
+     * Getter method.
+     * @return the list of the available commands' name
+     */
+    @Override
+    public Stream<String> getAvailableCommandsName() {
+        return CommandFactory.getAvailableCommandsName();
     }
 
     /**

@@ -1,5 +1,6 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
@@ -13,6 +14,17 @@ public class CommandQuit extends Command {
      */
     public CommandQuit(String command) {
         setCommand(command);
+    }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.QUIT.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.QUIT_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
     }
 
     /**

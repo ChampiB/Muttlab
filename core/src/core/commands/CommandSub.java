@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.plugins.Command;
@@ -13,6 +15,17 @@ public class CommandSub extends Command {
      * @param command : The command line.
      */
     public CommandSub(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SUB.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.SUB_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Subtract the two last elements of the list.

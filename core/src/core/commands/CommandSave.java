@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.helpers.CommandHelper;
 import muttlab.helpers.FileHelper;
 import muttlab.math.Element;
@@ -15,6 +17,17 @@ public class CommandSave extends Command {
      * @param command : The command line.
      */
     public CommandSave(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SAVE.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.SAVE_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Save the last matrix of the list in a file.

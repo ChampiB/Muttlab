@@ -1,5 +1,7 @@
 package core.commands;
 
+import core.languages.CoreDictionary;
+import core.languages.CoreKeys;
 import muttlab.helpers.CommandHelper;
 import muttlab.math.Element;
 import muttlab.math.elements.ScalarWrapper;
@@ -13,6 +15,17 @@ public class CommandMul extends Command {
      * @param command : The command line.
      */
     public CommandMul(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.MUL.toString());
+        return CoreDictionary.getInstance()
+                .getValue(CoreKeys.MUL_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Execute the multiplication between the two last elements of the stack.

@@ -21,6 +21,17 @@ public class CommandReduceLast extends Command {
     public CommandReduceLast(String command) { setCommand(command); }
 
     /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.REDUCE_LAST.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.REDUCE_LAST_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
+
+    /**
      * Reduce the list of matrices by taking the last.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.

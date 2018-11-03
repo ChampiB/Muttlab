@@ -27,6 +27,12 @@ public abstract class Command {
     protected abstract boolean execute(UserInterface ui, Stack<Element> elements) throws Exception;
 
     /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public abstract String getHelpMessage();
+
+    /**
      * Execute the command and handle the errors.
      * @param ui : The user interface to use for displaying messages.
      * @param elements : The current stack of elements.

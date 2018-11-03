@@ -1,11 +1,13 @@
 package core;
 
+import core.languages.CoreDictionary;
 import core.languages.CoreKeys;
 import muttlab.plugins.Command;
 import core.commands.*;
 
 import java.util.HashMap;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class CommandFactory {
 
@@ -28,6 +30,16 @@ public class CommandFactory {
         commands.put(CoreKeys.QUIT, CommandQuit::new);
         commands.put(CoreKeys.SCRIPT, CommandScript::new);
         return commands;
+    }
+
+    /**
+     * Getter method.
+     * @return the list of the available commands' name
+     */
+    public static Stream<String> getAvailableCommandsName() {
+        return commands.keySet().stream()
+                .map(Enum::toString)
+                .map(ks -> CoreDictionary.getInstance().getValue(ks));
     }
 
     /**

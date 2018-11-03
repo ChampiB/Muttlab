@@ -6,6 +6,8 @@ import muttlab.math.Element;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
+import streaming.languages.StreamingDictionary;
+import streaming.languages.StreamingKeys;
 
 import java.util.Stack;
 
@@ -15,6 +17,17 @@ public class CommandFilterWidth extends Command {
      * @param command : The command line.
      */
     public CommandFilterWidth(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.FILTER_WIDTH.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.FILTER_WIDTH_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Filter all the matrices which have not the width specified in the commands' parameters.

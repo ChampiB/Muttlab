@@ -25,6 +25,17 @@ public class CommandReduceAdd extends Command {
     public CommandReduceAdd(String command) { setCommand(command); }
 
     /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.REDUCE_ADD.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.REDUCE_ADD_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
+
+    /**
      * Reduce the matrices by summing them.
      * The matrices are only summed if they have the same size else the first one is returned.
      * @param m1: The first matrix.

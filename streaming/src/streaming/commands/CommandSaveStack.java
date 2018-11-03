@@ -6,6 +6,8 @@ import muttlab.math.matrices.Matrix;
 import muttlab.plugins.Command;
 import muttlab.ui.UserInterface;
 import streaming.CurrentStream;
+import streaming.languages.StreamingDictionary;
+import streaming.languages.StreamingKeys;
 
 import java.util.List;
 import java.util.Stack;
@@ -17,6 +19,17 @@ public class CommandSaveStack extends Command {
      * @param command : The command line.
      */
     public CommandSaveStack(String command) { setCommand(command); }
+
+    /**
+     * Getter method.
+     * @return the help message to display to the user.
+     */
+    public String getHelpMessage() {
+        String commandName = StreamingDictionary.getInstance().getValue(StreamingKeys.SAVE_STACK.toString());
+        return StreamingDictionary.getInstance()
+                .getValue(StreamingKeys.SAVE_STACK_HELP_MESSAGE.toString())
+                .replaceAll("COMMAND_NAME", commandName);
+    }
 
     /**
      * Save all the matrices of the stream into the stack.

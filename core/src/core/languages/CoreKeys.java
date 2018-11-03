@@ -9,6 +9,7 @@ public enum CoreKeys {
     NEW_MATRIX_ERROR_MESSAGE,
     FILE_NAME_NOT_FOUND_ERROR_MESSAGE,
     SAVE_CANT_WRITE_IN_FILE_ERROR_MESSAGE,
+    GLOBAL_HELP_MESSAGE,
     NEW_MATRIX,
     ADD,
     SUB,
@@ -18,7 +19,18 @@ public enum CoreKeys {
     SAVE,
     HELP,
     QUIT,
-    SCRIPT;
+    SCRIPT,
+    NEW_MATRIX_HELP_MESSAGE,
+    ADD_HELP_MESSAGE,
+    SUB_HELP_MESSAGE,
+    MUL_HELP_MESSAGE,
+    MUL_ELEMENT_WISE_HELP_MESSAGE,
+    DUP_HELP_MESSAGE,
+    SAVE_HELP_MESSAGE,
+    HELP_HELP_MESSAGE,
+    QUIT_HELP_MESSAGE,
+    SCRIPT_HELP_MESSAGE,
+    ;
 
     /**
      * Transform the command name write by the user into the corresponding key.
