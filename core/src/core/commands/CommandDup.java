@@ -1,12 +1,12 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
+import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
-import muttlab.math.Element;
-import muttlab.plugins.Command;
-import muttlab.ui.UserInterface;
-import java.util.Stack;
+import muttlab.languages.MuttLabStrings;
+import muttlab.math.Matrix;
+import muttlab.ui.components.ObservableStackWrapper;
+
+import java.io.OutputStream;
 
 public class CommandDup extends Command {
     /**
@@ -20,24 +20,28 @@ public class CommandDup extends Command {
      * @return the help message to display to the user.
      */
     public String getHelpMessage() {
-        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.DUP.toString());
-        return CoreDictionary.getInstance()
-                .getValue(CoreKeys.DUP_HELP_MESSAGE.toString())
-                .replaceAll("COMMAND_NAME", commandName);
+        return MuttLabStrings.DUP_HELP_MESSAGE.toString()
+                .replaceAll("COMMAND_NAME", MuttLabStrings.DUP_COMMAND_KEY.toString());
+    }
+
+    /**
+     * Getter.
+     * @return the command name.
+     */
+    public String getName() {
+        return MuttLabStrings.DUP_COMMAND_NAME.toString();
     }
 
     /**
      * Duplicate the last matrix of the list.
-     * @param ui : The user interface to use for displaying messages.
-     * @param elements : The current stack of elements.
-     * @return true if the session must be closed and false otherwise.
+     * @param out : The output stream to use for displaying messages.
+     * @param elements : The current stack of matrix.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 1);
         // Duplicate the last matrix of the stack.
         elements.push(elements.peek().copy());
-        return false;
     }
 }

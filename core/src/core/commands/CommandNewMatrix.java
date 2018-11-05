@@ -1,13 +1,12 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.math.Element;
-import muttlab.math.elements.MatrixWrapper;
-import muttlab.plugins.Command;
-import muttlab.ui.UserInterface;
+import muttlab.commands.Command;
+import muttlab.languages.MuttLabStrings;
+import muttlab.math.DenseMatrix;
+import muttlab.math.Matrix;
+import muttlab.ui.components.ObservableStackWrapper;
 
-import java.util.Stack;
+import java.io.OutputStream;
 
 public class CommandNewMatrix extends Command {
     /**
@@ -21,22 +20,26 @@ public class CommandNewMatrix extends Command {
      * @return the help message to display to the user.
      */
     public String getHelpMessage() {
-        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.NEW_MATRIX.toString());
-        return CoreDictionary.getInstance()
-                .getValue(CoreKeys.NEW_MATRIX_HELP_MESSAGE.toString())
-                .replaceAll("COMMAND_NAME", commandName);
+        return MuttLabStrings.NEW_MATRIX_HELP_MESSAGE.toString()
+                .replaceAll("COMMAND_NAME", MuttLabStrings.NEW_MATRIX_COMMAND_KEY.toString());
+    }
+
+    /**
+     * Getter.
+     * @return the command name.
+     */
+    public String getName() {
+        return MuttLabStrings.NEW_MATRIX_COMMAND_NAME.toString();
     }
 
     /**
      * Parse the text representation of the matrix and add it in the stack.
-     * @param ui : The user interface to use for displaying messages.
-     * @param elements : The current stack of elements.
-     * @return true if the session must be closed and false otherwise.
+     * @param out : The output stream to use for displaying messages.
+     * @param elements : The current stack of matrix.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Add a matrix in the stack.
-        elements.push(new MatrixWrapper().from(getCommand()));
-        return false;
+        elements.push(new DenseMatrix().from(getCommand()));
     }
 }

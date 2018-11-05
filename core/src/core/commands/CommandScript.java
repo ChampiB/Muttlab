@@ -1,18 +1,14 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
-import muttlab.MuttLab;
+import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
-import muttlab.math.Element;
-import muttlab.parsing.Parser;
-import muttlab.parsing.SimpleParser;
-import muttlab.plugins.Command;
-import muttlab.ui.UserInterface;
+import muttlab.languages.MuttLabStrings;
+import muttlab.math.Matrix;
+import muttlab.ui.components.ObservableStackWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Stack;
+import java.io.OutputStream;
 
 public class CommandScript extends Command {
     /**
@@ -28,26 +24,31 @@ public class CommandScript extends Command {
      * @return the help message to display to the user.
      */
     public String getHelpMessage() {
-        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SCRIPT.toString());
-        return CoreDictionary.getInstance()
-                .getValue(CoreKeys.SCRIPT_HELP_MESSAGE.toString())
-                .replaceAll("COMMAND_NAME", commandName);
+        return MuttLabStrings.SCRIPT_HELP_MESSAGE.toString()
+                .replaceAll("COMMAND_NAME", MuttLabStrings.SCRIPT_COMMAND_KEY.toString());
+    }
+
+    /**
+     * Getter.
+     * @return the command name.
+     */
+    public String getName() {
+        return MuttLabStrings.SCRIPT_COMMAND_NAME.toString();
     }
 
     /**
      * Execute the script contains in the file passed as (command) parameter.
-     * @param ui : The user interface to use for displaying messages.
-     * @param elements : The current stack of elements.
-     * @return true if the session must be closed and false otherwise.
+     * @param out : The output stream to use for displaying messages.
+     * @param elements : The current stack of matrix.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Check that there is at least one parameter.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Execute the script command.
         FileInputStream fileReader = new FileInputStream(new File(args[1]));
-        Parser parser = new SimpleParser(fileReader);
-        return MuttLab.executeUserCommands(parser, ui, elements, true);
+        // TODO Parser parser = new SimpleParser(fileReader);
+        // TODO MuttLab.executeUserCommands(parser, out, elements, true);
     }
 }

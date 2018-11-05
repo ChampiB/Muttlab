@@ -1,15 +1,14 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
+import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
 import muttlab.helpers.FileHelper;
-import muttlab.math.Element;
-import muttlab.plugins.Command;
-import muttlab.ui.UserInterface;
+import muttlab.languages.MuttLabStrings;
+import muttlab.math.Matrix;
+import muttlab.ui.components.ObservableStackWrapper;
 
 import java.io.FileWriter;
-import java.util.Stack;
+import java.io.OutputStream;
 
 public class CommandSave extends Command {
     /**
@@ -23,20 +22,25 @@ public class CommandSave extends Command {
      * @return the help message to display to the user.
      */
     public String getHelpMessage() {
-        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SAVE.toString());
-        return CoreDictionary.getInstance()
-                .getValue(CoreKeys.SAVE_HELP_MESSAGE.toString())
-                .replaceAll("COMMAND_NAME", commandName);
+        return MuttLabStrings.SAVE_HELP_MESSAGE.toString()
+                .replaceAll("COMMAND_NAME", MuttLabStrings.SAVE_COMMAND_KEY.toString());
+    }
+
+    /**
+     * Getter.
+     * @return the command name.
+     */
+    public String getName() {
+        return MuttLabStrings.SAVE_COMMAND_NAME.toString();
     }
 
     /**
      * Save the last matrix of the list in a file.
-     * @param ui : The user interface to use for displaying messages.
-     * @param elements : The current stack of elements.
-     * @return true if the session must be closed and false otherwise.
+     * @param out : The output stream to use for displaying messages.
+     * @param elements : The current stack of matrix.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Check that there is at least one parameter.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 2, 2);
@@ -44,6 +48,5 @@ public class CommandSave extends Command {
         final FileWriter fileWriter = FileHelper.openWriter(args[1]);
         fileWriter.write(elements.peek().asString());
         fileWriter.flush();
-        return false;
     }
 }

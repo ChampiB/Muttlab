@@ -1,13 +1,12 @@
 package core.commands;
 
-import core.languages.CoreDictionary;
-import core.languages.CoreKeys;
+import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
-import muttlab.math.Element;
-import muttlab.plugins.Command;
-import muttlab.ui.UserInterface;
+import muttlab.languages.MuttLabStrings;
+import muttlab.math.Matrix;
+import muttlab.ui.components.ObservableStackWrapper;
 
-import java.util.Stack;
+import java.io.OutputStream;
 
 public class CommandSub extends Command {
     /**
@@ -21,28 +20,33 @@ public class CommandSub extends Command {
      * @return the help message to display to the user.
      */
     public String getHelpMessage() {
-        String commandName = CoreDictionary.getInstance().getValue(CoreKeys.SUB.toString());
-        return CoreDictionary.getInstance()
-                .getValue(CoreKeys.SUB_HELP_MESSAGE.toString())
-                .replaceAll("COMMAND_NAME", commandName);
+        return MuttLabStrings.SUB_HELP_MESSAGE.toString()
+                .replaceAll("COMMAND_NAME", MuttLabStrings.SUB_COMMAND_KEY.toString());
+    }
+
+    /**
+     * Getter.
+     * @return the command name.
+     */
+    public String getName() {
+        return MuttLabStrings.SUB_COMMAND_NAME.toString();
     }
 
     /**
      * Subtract the two last elements of the list.
-     * @param ui : The user interface to use for displaying messages.
-     * @param elements : The current stack of elements.
-     * @return true if the session must be closed and false otherwise.
+     * @param out : The output stream to use for displaying messages.
+     * @param elements : The current stack of matrix.
      */
     @Override
-    public boolean execute(UserInterface ui, Stack<Element> elements) throws Exception {
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 2);
         // Execute the subtraction between the two last element in the queue.
-        Element e1 = elements.pop();
-        Element e2 = elements.pop();
-        Element res = e2.sub(e1);
-        elements.push(res);
-        ui.println(res.asString());
-        return false;
+        Matrix e1 = elements.pop();
+        Matrix e2 = elements.pop();
+        e2.sub(e1);
+        elements.push(e2);
+        String message = e2.asString() + "\n";
+        out.write(message.getBytes());
     }
 }

@@ -1,0 +1,89 @@
+//
+// Style of TabPane
+//
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: rgba(150, 150, 150, 255);
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+.tab-pane .tab-label {
+    -fx-text-fill: rgba(210, 210, 210, 255);
+}
+
+.tab-pane .tab-header-area .tab {
+    -fx-background-color: rgba(42, 42, 42, 255);
+}
+
+.tab-pane {
+    -fx-background-color: rgba(42, 42, 42, 255);
+}
+
+.tab-pane .tab-content-area {
+    -fx-alignment: CENTER;
+}
+
+//
+// White label style
+//
+.white-label {
+    -fx-text-fill: rgba(180, 180, 180, 255);
+}
+
+//
+// Console output style
+//
+.console-output {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+//
+// ScrollPane style
+//
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-pref-width: 10;
+    -fx-background-color:transparent;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: rgba(60, 63, 65, 255);
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(42, 42, 42, 255);
+    -fx-background-radius: 5;
+}
+
+.scroll-pane .corner {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: rgba(60, 63, 65, 255);
+    -fx-border-color: rgba(60, 63, 65, 255);
+    -fx-border-width: 2;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .increment-arrow {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
