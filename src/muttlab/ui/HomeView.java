@@ -1,8 +1,5 @@
 package muttlab.ui;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -12,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -127,7 +123,7 @@ public class HomeView {
         ScrollPane scroller = new ScrollPane();
         scroller.setPrefHeight(100);
         scroller.prefWidthProperty().bind(prompt.widthProperty());
-        scroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         // Create the output.
         Label output = new Label("");
@@ -135,7 +131,7 @@ public class HomeView {
         output.textProperty().addListener((obv, o, n) -> scroller.setVvalue(1.0));
         output.getStyleClass().add("white-label");
         output.getStyleClass().add("console-output");
-        output.prefWidthProperty().bind(scroller.widthProperty());
+        output.minWidthProperty().bind(scroller.widthProperty());
         output.minHeightProperty().bind(scroller.heightProperty());
         output.setAlignment(Pos.CENTER_LEFT);
         output.setPadding(new Insets(20));
@@ -151,6 +147,7 @@ public class HomeView {
     private VBox createConsole() {
         // Create the prompt.
         TextField prompt = new TextField();
+        prompt.setPrefWidth(500);
         prompt.setPromptText(MuttLabStrings.COMMAND_PROMPT_HELP_MESSAGE.toString());
         prompt.onKeyPressedProperty().setValue(x -> {
             if (x.getCode().equals(KeyCode.ENTER)) {
@@ -164,7 +161,7 @@ public class HomeView {
         // Create the console.
         VBox console = new VBox();
         console.getChildren().addAll(output, prompt);
-        console.setMaxWidth(500);
+        console.setMaxWidth(1000);
         console.setAlignment(Pos.CENTER);
         console.setSpacing(10);
         return console;
@@ -220,6 +217,8 @@ public class HomeView {
         // Build the primary stage.
         primaryStage.setScene(scene);
         primaryStage.setTitle(MuttLab.getAppName() + " " + MuttLab.getVersion());
+        File file = new File("./src/muttlab/ui/img/muttlab-app-logo.png");
+        primaryStage.getIcons().add(new Image(file.toURI().toString()));
         primaryStage.show();
     }
 }

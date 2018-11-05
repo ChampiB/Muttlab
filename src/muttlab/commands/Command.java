@@ -10,12 +10,18 @@ public abstract class Command {
     private String command;
 
     /**
-     * Execute the command.
+     * Execute the command. (don't apply modification in the stack)
      * @param output: The output of the command.
      * @param elements: The stack of element.
      * @throws Exception if an error occurred.
      */
     protected abstract void execute(OutputStream output, ObservableStackWrapper<Matrix> elements) throws Exception;
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected abstract void flush(ObservableStackWrapper<Matrix> elements) throws Exception;
 
     /**
      * Getter.

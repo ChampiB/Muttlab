@@ -4,13 +4,19 @@ import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
+import muttlab.ui.HomeController;
 import muttlab.ui.components.ObservableStackWrapper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.Scanner;
 
 public class CommandScript extends Command {
+
+    private String fileName = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -46,9 +52,17 @@ public class CommandScript extends Command {
         // Check that there is at least one parameter.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 2, 2);
-        // Execute the script command.
-        FileInputStream fileReader = new FileInputStream(new File(args[1]));
-        // TODO Parser parser = new SimpleParser(fileReader);
-        // TODO MuttLab.executeUserCommands(parser, out, elements, true);
+        fileName = args[1];
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) throws Exception {
+        Scanner input = new Scanner(new FileInputStream(new File(fileName)));
+        while (input.hasNextLine()) {
+            HomeController.get().executeCommand(input.nextLine());
+        }
     }
 }

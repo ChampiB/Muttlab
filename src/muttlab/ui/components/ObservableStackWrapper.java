@@ -1,5 +1,6 @@
 package muttlab.ui.components;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.EmptyStackException;
@@ -7,6 +8,13 @@ import java.util.EmptyStackException;
 public class ObservableStackWrapper<T> {
 
     private ObservableList<T> list;
+
+    /**
+     * Create the observable stack.
+     */
+    public ObservableStackWrapper() {
+        list = FXCollections.observableArrayList();
+    }
 
     /**
      * Getter.

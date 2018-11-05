@@ -147,4 +147,13 @@ public abstract class Matrix {
     public boolean hasCompatibleSizeWith(Matrix matrix) {
         return getWidth().equals(matrix.getHeight());
     }
+
+    /**
+     * Override the to String method.
+     * @return the string representation of the matrix.
+     */
+    @Override
+    public String toString() {
+        return this.asString();
+    }
 }

@@ -47,4 +47,11 @@ public class CommandQuit extends Command {
         // Signal that we want to quit.
         System.exit(0);
     }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+    }
 }

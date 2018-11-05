@@ -44,7 +44,12 @@
     -fx-background-color: transparent;
 }
 
-.scroll-bar:horizontal, .scroll-bar:vertical{
+.scroll-bar:horizontal {
+    -fx-pref-height: 10;
+    -fx-background-color:transparent;
+}
+
+.scroll-bar:vertical {
     -fx-pref-width: 10;
     -fx-background-color:transparent;
 }

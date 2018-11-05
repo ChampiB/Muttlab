@@ -30,7 +30,7 @@ public class Plugin extends muttlab.plugins.Plugin {
             MuttLabStrings commandName = MuttLabStrings.fromString(name);
             return CommandFactory.create(commandName, command);
         } catch (Exception e) {
-            return new UnknownCommand();
+            return null;
         }
     }
 

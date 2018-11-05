@@ -19,6 +19,13 @@ public class UnknownCommand extends Command {
     }
 
     /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+    }
+
+    /**
      * Getter.
      * @return the help message to display to the user.
      */

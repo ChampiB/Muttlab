@@ -11,6 +11,10 @@ import java.io.FileWriter;
 import java.io.OutputStream;
 
 public class CommandSave extends Command {
+
+    private String fileName = null;
+    private String result = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -44,8 +48,17 @@ public class CommandSave extends Command {
         // Check that there is at least one parameter.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 2, 2);
+        fileName = args[1];
+        result = elements.peek().asString();
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) throws Exception {
         // Save the last matrix of the stack.
-        final FileWriter fileWriter = FileHelper.openWriter(args[1]);
+        final FileWriter fileWriter = FileHelper.openWriter(fileName);
         fileWriter.write(elements.peek().asString());
         fileWriter.flush();
     }

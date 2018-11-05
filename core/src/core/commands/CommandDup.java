@@ -9,6 +9,9 @@ import muttlab.ui.components.ObservableStackWrapper;
 import java.io.OutputStream;
 
 public class CommandDup extends Command {
+
+    private Matrix result = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -42,6 +45,14 @@ public class CommandDup extends Command {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 1);
         // Duplicate the last matrix of the stack.
-        elements.push(elements.peek().copy());
+        result = elements.peek().copy();
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.push(result);
     }
 }

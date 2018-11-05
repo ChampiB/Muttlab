@@ -30,8 +30,8 @@ public class HomeModel {
      * @param ct: The command to execute.
      */
     synchronized void handleNewCommand(CommandTask ct) {
-        runningTasks.add(ct);
-        if (runningTasks.size() == 1)
+        getRunningTasks().add(ct);
+        if (getRunningTasks().size() == 1)
             ct.execute(getMatricesStack(), this::callbackEndOfTask);
     }
 
@@ -39,10 +39,15 @@ public class HomeModel {
      * Callback that is called at the end of each task.
      */
     synchronized public void callbackEndOfTask() {
+        // Flush the output of the first running task.
         CommandTask ct = getRunningTasks().get(0);
-        getConsoleOutput().setValue(ct.flush());
+        getConsoleOutput().setValue(ct.flush(getMatricesStack()));
+        // Flush the output of the first running task.
         getRunningTasks().remove(0);
         getTasksHistory().add(ct);
+        // Execute the next task.
+        if (!getRunningTasks().isEmpty())
+            getRunningTasks().get(0).execute(getMatricesStack(), this::callbackEndOfTask);
     }
 
     /**

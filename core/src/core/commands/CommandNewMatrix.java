@@ -9,6 +9,9 @@ import muttlab.ui.components.ObservableStackWrapper;
 import java.io.OutputStream;
 
 public class CommandNewMatrix extends Command {
+
+    private Matrix result = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -39,7 +42,15 @@ public class CommandNewMatrix extends Command {
      */
     @Override
     public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
-        // Add a matrix in the stack.
-        elements.push(new DenseMatrix().from(getCommand()));
+        // Create a new matrix.
+        result = new DenseMatrix().from(getCommand());
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.push(result);
     }
 }

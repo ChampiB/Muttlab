@@ -3,6 +3,7 @@ package core.commands;
 import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
 import muttlab.helpers.ConverterHelper;
+import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
 import muttlab.ui.components.ObservableStackWrapper;
@@ -10,6 +11,9 @@ import muttlab.ui.components.ObservableStackWrapper;
 import java.io.OutputStream;
 
 public class CommandMul extends Command {
+
+    private Matrix result = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -37,26 +41,36 @@ public class CommandMul extends Command {
      * Execute the multiplication between the two last elements of the stack. Call multiplication method.
      * @param out : The output stream to use for displaying messages.
      * @param elements : The current stack of matrix.
-     * @throws Exception
+     * @throws Exception if an error occurred.
      */
     @Override
     public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         String[] args = getCommand().split(" ");
-        // Check the number of element in the stack.
-        CommandHelper.checkAtLeastInTheStack(elements, 2);
-        // Compute the multiplication.
-        Matrix e1 = elements.pop();
         if (args.length > 1) {
+            // Check the number of element in the stack.
+            CommandHelper.checkAtLeastInTheStack(elements, 1);
+            // Multiplication with a scalar.
+            Matrix e1 = elements.pop();
             e1.mul(ConverterHelper.toFloat(args[1]));
-            elements.push(e1);
-            String message = e1.asString() + "\n";
-            out.write(message.getBytes());
+            result = e1;
+            DisplayHelper.println(out, e1.asString());
         } else {
+            // Check the number of element in the stack.
+            CommandHelper.checkAtLeastInTheStack(elements, 2);
+            // Multiplication with a matrix.
+            Matrix e1 = elements.pop();
             Matrix e2 = elements.pop();
             e2.mul(e1);
-            elements.push(e2);
-            String message = e2.asString() + "\n";
-            out.write(message.getBytes());
+            result = e2;
+            DisplayHelper.println(out, e2.asString());
         }
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.push(result);
     }
 }

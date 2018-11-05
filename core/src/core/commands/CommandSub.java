@@ -2,6 +2,7 @@ package core.commands;
 
 import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
+import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
 import muttlab.ui.components.ObservableStackWrapper;
@@ -9,6 +10,9 @@ import muttlab.ui.components.ObservableStackWrapper;
 import java.io.OutputStream;
 
 public class CommandSub extends Command {
+
+    private Matrix result = null;
+
     /**
      * Constructor.
      * @param command : The command line.
@@ -45,8 +49,15 @@ public class CommandSub extends Command {
         Matrix e1 = elements.pop();
         Matrix e2 = elements.pop();
         e2.sub(e1);
-        elements.push(e2);
-        String message = e2.asString() + "\n";
-        out.write(message.getBytes());
+        result = e2;
+        DisplayHelper.println(out, e2.asString());
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.push(result);
     }
 }

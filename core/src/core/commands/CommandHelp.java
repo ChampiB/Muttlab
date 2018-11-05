@@ -2,6 +2,7 @@ package core.commands;
 
 import muttlab.commands.Command;
 import muttlab.helpers.CommandHelper;
+import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
 import muttlab.plugins.PluginsManager;
@@ -80,13 +81,18 @@ public class CommandHelp extends Command {
         // Check the number of parameters.
         String[] args = getCommand().split(" ");
         CommandHelper.checkNumberOfParameters(args, 1, 2);
-
         if (args.length == 1) { // 'help' was entered.
-            String message = MuttLabStrings.GLOBAL_HELP_MESSAGE.toString() + "\n" + getAvailableCommandsName() + "\n";
-            out.write(message.getBytes());
+            DisplayHelper.println(out, MuttLabStrings.GLOBAL_HELP_MESSAGE.toString());
+            DisplayHelper.println(out, getAvailableCommandsName());
         } else { // 'help <command_name>' was entered.
-            String message = getHelpOfCommand(args[1]) + "\n";
-            out.write(message.getBytes());
+            DisplayHelper.println(out, getHelpOfCommand(args[1]));
         }
+    }
+
+    /**
+     * Flush the command output.
+     * @param elements: The stack of element.
+     */
+    protected void flush(ObservableStackWrapper<Matrix> elements) {
     }
 }

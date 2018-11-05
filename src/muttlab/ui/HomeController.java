@@ -8,18 +8,29 @@ public class HomeController {
     private HomeModel model;
 
     /**
-     * Build the home controller.
-     * @param model: The home model.
+     * Singleton design pattern.
      */
-    public HomeController(HomeModel model) {
+    private static HomeController instance = new HomeController();
+
+    public static HomeController get() { return instance; }
+
+    private HomeController() {}
+
+    /**
+     * Set the model.
+     * @param model: The home model.
+     * @return this.
+     */
+    public HomeController setModel(HomeModel model) {
         this.model = model;
+        return this;
     }
 
     /**
      * Build and execute the command using the command line.
      * @param command: The command line.
      */
-    void executeCommand(String command) {
+    public void executeCommand(String command) {
         model.handleNewCommand(new CommandTask(CommandFactory.create(command)));
     }
 }

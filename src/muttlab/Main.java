@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Create the graphical user interface, using the MVC design pattern.
         HomeModel model = new HomeModel();
-        HomeController controller = new HomeController(model);
+        HomeController controller = HomeController.get().setModel(model);
         HomeView view = new HomeView(controller, model);
         view.show(primaryStage);
     }
