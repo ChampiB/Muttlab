@@ -29,25 +29,43 @@ public class HomeModel {
      * Add the command in the running tasks and execute it if needed.
      * @param ct: The command to execute.
      */
-    synchronized void handleNewCommand(CommandTask ct) {
+    void handleNewCommand(CommandTask ct) {
         getRunningTasks().add(ct);
-        if (getRunningTasks().size() == 1)
-            ct.execute(getMatricesStack(), this::callbackEndOfTask);
     }
 
     /**
-     * Callback that is called at the end of each task.
+     * TODO
+     * @return
      */
-    synchronized public void callbackEndOfTask() {
-        // Flush the output of the first running task.
-        CommandTask ct = getRunningTasks().get(0);
-        getConsoleOutput().setValue(ct.flush(getMatricesStack()));
-        // Flush the output of the first running task.
-        getRunningTasks().remove(0);
-        getTasksHistory().add(ct);
-        // Execute the next task.
-        if (!getRunningTasks().isEmpty())
-            getRunningTasks().get(0).execute(getMatricesStack(), this::callbackEndOfTask);
+    boolean isCurrentTaskRunning() {
+        if (getRunningTasks().isEmpty())
+            return false;
+        CommandTask current = getRunningTasks().get(0);
+        return current.hasBeenRun() && !current.isRunOver();
+    }
+
+    /**
+     * TODO
+     * @return
+     */
+    void moveTaskFinishedToHistory() {
+        for (int i = 0; i < getRunningTasks().size(); ++i) {
+            CommandTask task = getRunningTasks().get(i);
+            if (task.isRunOver()) {
+                task.flush(getMatricesStack());
+                getTasksHistory().add(task);
+                getRunningTasks().remove(i);
+            }
+        }
+    }
+
+    /**
+     * Run the next that need to be run.
+     */
+    void runNext() {
+        if (getRunningTasks().isEmpty())
+            return;
+        getRunningTasks().get(0).execute(getMatricesStack());
     }
 
     /**

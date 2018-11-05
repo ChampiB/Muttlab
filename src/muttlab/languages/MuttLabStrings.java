@@ -85,6 +85,7 @@ public enum MuttLabStrings {
     REDUCER_NAME_FIRST("first"),
     REDUCER_NAME_LPAD("pad_l"),
     REDUCER_NAME_RPAD("pad_r"),
+    TASK_DONE("Done."),
     BY_SUM("<+"),
     BY_MIN("<m"),
     BY_MAX("<M"),

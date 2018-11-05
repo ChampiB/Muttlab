@@ -27,6 +27,16 @@ public class HomeController {
     }
 
     /**
+     * Update the tasks' queue.
+     */
+    void updateTasksQueue() {
+        if (!model.isCurrentTaskRunning()) {
+            model.moveTaskFinishedToHistory();
+            model.runNext();
+        }
+    }
+
+    /**
      * Build and execute the command using the command line.
      * @param command: The command line.
      */

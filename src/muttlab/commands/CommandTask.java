@@ -1,6 +1,5 @@
 package muttlab.commands;
 
-import javafx.concurrent.Task;
 import muttlab.exceptions.UserException;
 import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
@@ -14,20 +13,23 @@ import java.util.Arrays;
 
 public class CommandTask {
 
+    private PipedInputStream in;
+    private PipedOutputStream out;
+    private Command command;
+    private String commandOutput;
+    private Status status;
+
     /**
      * The tasks' status.
      */
     enum Status {
         WAITING_FOR_RUN,
-        WAITING_FOR_OUTPUT,
-        SUCCESS,
-        FAIL
+        RUNNING,
+        RUN_SUCCESS,
+        RUN_FAIL,
+        TASK_FAIL,
+        TASK_SUCCESS
     }
-
-    private PipedInputStream in;
-    private PipedOutputStream out;
-    private Command command;
-    private Status status;
 
     /**
      * Create the command task, which is a wrapper around a command.
@@ -47,10 +49,12 @@ public class CommandTask {
     /**
      * Execute the procedure and handle the error.
      * @param p: The procedure.
+     * @return the error status: true if an error occurred and false otherwise.
      */
-    private void handleErrorWrapper(Procedure p) {
+    private boolean handleErrorWrapper(Procedure p) {
         try {
             p.call();
+            return false;
         } catch (UserException e) {
             DisplayHelper.println(out, e.getMessage());
         } catch (IOException e) {
@@ -61,29 +65,44 @@ public class CommandTask {
             Logging.log(LoggingLevel.ERROR, Arrays.toString(e.getStackTrace()));
             DisplayHelper.println(out, MuttLabStrings.COMMAND_FAILED_CHECK_LOG.toString());
         }
+        return true;
     }
 
     /**
      * Execute the command.
      * @param stack: The current stack of matrices.
-     * @param p: The procedure to call after the execution.
      */
-    public void execute(ObservableStackWrapper<Matrix> stack, Runnable p) {
-        Task<Void> t = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                status = Status.FAIL;
-                handleErrorWrapper(() -> {
-                    command.execute(out, stack);
-                    status = Status.WAITING_FOR_OUTPUT;
-                });
-                return null;
+    public void execute(ObservableStackWrapper<Matrix> stack) {
+        Thread thread = new Thread(() -> {
+            status = Status.RUNNING;
+            if (handleErrorWrapper(() -> command.execute(out, stack))) {
+                status = Status.RUN_FAIL;
+            } else {
+                status = Status.RUN_SUCCESS;
             }
-        };
-        t.setOnSucceeded((x) -> p.run());
-        Thread thread = new Thread(t);
+        });
         thread.setDaemon(true);
-        thread.run();
+        thread.start();
+    }
+
+    // TODO
+    // stream_from ./resources/streaming/matrices_5.csv
+    // reduce_add pad_r
+
+    /**
+     * Check if the task's run is over.
+     * @return true if the task's run is over and false otherwise.
+     */
+    public boolean isRunOver() {
+        return status == Status.RUN_FAIL || status == Status.RUN_SUCCESS;
+    }
+
+    /**
+     * Check true if the task has been run and false otherwise.
+     * @return true if the task has been run and false otherwise.
+     */
+    public boolean hasBeenRun() {
+        return status != Status.WAITING_FOR_RUN;
     }
 
     /**
@@ -92,19 +111,26 @@ public class CommandTask {
      * @return the method output.
      */
     public String flush(ObservableStackWrapper<Matrix> stack) {
-        if (status != Status.FAIL) {
-            handleErrorWrapper(() -> command.flush(stack));
-            status = Status.SUCCESS;
-        }
+        // Apply the command's modification.
+        boolean error = false;
+        if (status != Status.RUN_FAIL)
+            error = handleErrorWrapper(() -> command.flush(stack));
+        // Get the command's textual output.
         try {
             out.close();
             StringBuilder output = new StringBuilder();
             BufferedReader s = new BufferedReader(new InputStreamReader(in));
             s.lines().forEach(line -> output.append(line).append("\n"));
-            return output.toString();
+            commandOutput = output.toString();
+            if (commandOutput.equals(""))
+                commandOutput = MuttLabStrings.TASK_DONE.toString();
         } catch (Exception e) {
-            return MuttLabStrings.FAIL_TO_FLUSH_COMMAND_OUTPUT.toString();
+            commandOutput = MuttLabStrings.FAIL_TO_FLUSH_COMMAND_OUTPUT.toString();
+            error = true;
         }
+        // Set the final tasks status.
+        status = (error || status == Status.RUN_FAIL) ? Status.TASK_FAIL : Status.TASK_SUCCESS;
+        return commandOutput;
     }
 
     /**
@@ -113,6 +139,6 @@ public class CommandTask {
      */
     @Override
     public String toString() {
-        return command.getName() + ": " + status.toString();
+        return command.getName() + "[" + status.toString() + "]: " + commandOutput;
     }
 }

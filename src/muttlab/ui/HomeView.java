@@ -1,5 +1,10 @@
 package muttlab.ui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -12,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import muttlab.MuttLab;
 import muttlab.commands.CommandTask;
 import muttlab.languages.MuttLabStrings;
@@ -52,6 +58,15 @@ public class HomeView {
                 System.exit(0);
             }
         });
+        // Frequently check if we need to run tasks.
+        Timeline cron = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.updateTasksQueue();
+            }
+        }));
+        cron.setCycleCount(Timeline.INDEFINITE);
+        cron.play();
         return vBox;
     }
 
@@ -60,14 +75,13 @@ public class HomeView {
      * @return the tab.
      */
     private Tab createMatricesTab() {
-        // Create the list of running tasks.
-        ListView<Matrix> list = new ListView<>();
-        list.setItems(model.getMatrices());
+        // Create the list of the stack of matrices.
+        VBox vBox = createPrettyListView(model.getMatrices());
         // Create the tab.
         Tab tab = new Tab();
         tab.setClosable(false);
         tab.setText(MuttLabStrings.MATRICES_STACK_TAB_NAME.toString());
-        tab.setContent(list);
+        tab.setContent(vBox);
         return tab;
     }
 
@@ -77,14 +91,41 @@ public class HomeView {
      */
     private Tab createTasksTab() {
         // Create the list of running tasks.
-        ListView<CommandTask> list = new ListView<>();
-        list.setItems(model.getRunningTasks());
+        VBox vBox = createPrettyListView(model.getRunningTasks());
         // Create the tab.
         Tab tab = new Tab();
         tab.setClosable(false);
         tab.setText(MuttLabStrings.RUNNING_TASKS_TAB_NAME.toString());
-        tab.setContent(list);
+        tab.setContent(vBox);
         return tab;
+    }
+
+    /**
+     * Create a pretty ListView.
+     * @param observableList: The observable list to display.
+     * @param <T>: The type of the observable list .
+     * @return a wrapper around the list view.
+     */
+    private <T> VBox createPrettyListView(ObservableList<T> observableList) {
+        // Create the list view.
+        ListView<T> list = new ListView<>();
+        list.setMinHeight(720);
+        list.setMinWidth(1080);
+        list.setItems(observableList);
+        // Wrap the list inside a scroll pane.
+        ScrollPane sp = new ScrollPane();
+        sp.getStyleClass().add("list-view-wrapper");
+        sp.setContent(list);
+        // Wrap the scroll pane inside a VBox.
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(sp);
+        sp.setContent(list);
+        sp.setPrefHeight(720);
+        sp.setPrefWidth(1080);
+        sp.setMaxHeight(720);
+        sp.setMaxWidth(1080);
+        return vBox;
     }
 
     /**
@@ -92,14 +133,13 @@ public class HomeView {
      * @return the tab.
      */
     private Tab createHistoryTab() {
-        // Create the list of running tasks.
-        ListView<CommandTask> list = new ListView<>();
-        list.setItems(model.getTasksHistory());
+        // Create the list of tasks history.
+        VBox vBox = createPrettyListView(model.getTasksHistory());
         // Create the tab.
         Tab tab = new Tab();
         tab.setClosable(false);
         tab.setText(MuttLabStrings.HISTORY_TAB_NAME.toString());
-        tab.setContent(list);
+        tab.setContent(vBox);
         return tab;
     }
 
@@ -161,7 +201,7 @@ public class HomeView {
         // Create the console.
         VBox console = new VBox();
         console.getChildren().addAll(output, prompt);
-        console.setMaxWidth(1000);
+        console.setMaxWidth(1080);
         console.setAlignment(Pos.CENTER);
         console.setSpacing(10);
         return console;
