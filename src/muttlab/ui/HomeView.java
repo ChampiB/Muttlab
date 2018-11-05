@@ -75,7 +75,7 @@ public class HomeView {
      */
     private Tab createMatricesTab() {
         // Create the list of the stack of matrices.
-        VBox vBox = createPrettyListView(model.getMatrices(), 1080, 720);
+        VBox vBox = createPrettyListView("Stack", model.getMatrices(), 1080, 720);
         // Create the tab's content.
         VBox wrapper = new VBox();
         wrapper.setAlignment(Pos.CENTER);
@@ -94,7 +94,10 @@ public class HomeView {
      * @param <T>: The type of the observable list .
      * @return a wrapper around the list view.
      */
-    private <T> VBox createPrettyListView(ObservableList<T> observableList, int width, int height) {
+    private <T> VBox createPrettyListView(String title, ObservableList<T> observableList, int width, int height) {
+        // Create the title.
+        Label titleLabel = new Label(title);
+        titleLabel.getStyleClass().add("white-label");
         // Create the list view.
         ListView<T> list = new ListView<>();
         list.setPrefHeight(height - 4);
@@ -105,15 +108,15 @@ public class HomeView {
         sp.setContent(list);
         sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sp.widthProperty().addListener((ov, o, n) -> list.setPrefWidth(width - 4));
+        sp.heightProperty().addListener((ov, o, n) -> list.setPrefHeight(height - 20));
         sp.setContent(list);
         sp.setPrefHeight(height);
         sp.setPrefWidth(width);
         // Wrap the scroll pane inside a VBox.
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().add(sp);
-        vBox.widthProperty().addListener((ov, o, n) -> list.setPrefWidth(width - 4));
-        vBox.heightProperty().addListener((ov, o, n) -> list.setPrefHeight(height - 4));
+        vBox.getChildren().addAll(titleLabel, sp);
         vBox.setMaxWidth(width);
         vBox.setMaxHeight(height);
         return vBox;
@@ -133,7 +136,10 @@ public class HomeView {
      * Create the console output.
      * @return the console output.
      */
-    private ScrollPane createConsoleOutput(int width, int height) {
+    private VBox createConsoleOutput(int width, int height) {
+        // Create the title.
+        Label titleLabel = new Label("Console output");
+        titleLabel.getStyleClass().add("white-label");
         // Create the scroll pane.
         ScrollPane scroller = new ScrollPane();
         scroller.setPrefHeight(height);
@@ -152,7 +158,11 @@ public class HomeView {
         output.setPadding(new Insets(20));
         // Wrap the out in a ScrollPane.
         scroller.setContent(output);
-        return scroller;
+        // Create console output.
+        VBox consoleOutput = new VBox();
+        consoleOutput.setAlignment(Pos.CENTER);
+        consoleOutput.getChildren().addAll(titleLabel, scroller);
+        return consoleOutput;
     }
 
     /**
@@ -184,11 +194,11 @@ public class HomeView {
         // Create the muttlab logo.
         ImageView image = createLogoImage();
         // Create the list of running tasks.
-        VBox tasks = createPrettyListView(model.getRunningTasks(), 530, 300);
+        VBox tasks = createPrettyListView("Running tasks", model.getRunningTasks(), 530, 300);
         // Create the list of tasks history.
-        VBox history = createPrettyListView(model.getTasksHistory(), 530, 300);
+        VBox history = createPrettyListView("History", model.getTasksHistory(), 530, 300);
         // Create the console output.
-        ScrollPane console = createConsoleOutput(1080, 150);
+        VBox console = createConsoleOutput(1080, 150);
         // Create horizontal panel.
         HBox hb = new HBox();
         hb.getChildren().addAll(tasks, history);
