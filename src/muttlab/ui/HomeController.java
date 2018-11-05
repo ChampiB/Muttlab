@@ -29,7 +29,7 @@ public class HomeController {
     /**
      * Update the tasks' queue.
      */
-    void updateTasksQueue() {
+    synchronized void updateTasksQueue() {
         if (!model.isCurrentTaskRunning()) {
             model.moveTasksFinishedToHistory();
             model.runNext();
@@ -37,10 +37,10 @@ public class HomeController {
     }
 
     /**
-     * Build and execute the command using the command line.
+     * Build the command using the command line and push it to the model.
      * @param command: The command line.
      */
-    public void executeCommand(String command) {
+    synchronized public void handleNewCommand(String command) {
         model.handleNewCommand(new CommandTask(CommandFactory.create(command)));
     }
 }

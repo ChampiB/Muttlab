@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
@@ -170,13 +169,12 @@ public class HomeView {
             if (x.getCode().equals(KeyCode.ENTER)) {
                 String command = prompt.getText();
                 model.appendInConsoleOutput("> " + command + "\n");
-                controller.executeCommand(command);
+                controller.handleNewCommand(command);
                 prompt.setText("");
             }
         });
         return prompt;
     }
-
 
     /**
      * Create the body content.

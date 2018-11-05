@@ -61,7 +61,7 @@ public class CommandScript extends Command {
     protected void flush(ObservableStackWrapper<Matrix> elements) throws Exception {
         Scanner input = new Scanner(new FileInputStream(new File(fileName)));
         while (input.hasNextLine()) {
-            HomeController.get().executeCommand(input.nextLine());
+            HomeController.get().handleNewCommand(input.nextLine());
         }
     }
 }

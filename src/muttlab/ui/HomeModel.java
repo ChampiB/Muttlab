@@ -30,7 +30,7 @@ public class HomeModel {
      * @param ct: The command to execute.
      */
     void handleNewCommand(CommandTask ct) {
-        getRunningTasks().add(ct);
+        getRunningTasks().add(0,    ct);
     }
 
     /**
