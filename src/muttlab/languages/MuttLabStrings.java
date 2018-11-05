@@ -6,10 +6,8 @@ package muttlab.languages;
 public enum MuttLabStrings {
 
     // Tab's name.
-    RUNNING_TASKS_TAB_NAME("Running tasks"),
-    MATRICES_STACK_TAB_NAME("Matrices stack"),
-    COMMAND_PROMPT_TAB_NAME("Command prompt"),
-    HISTORY_TAB_NAME("History"),
+    MATRICES_STACK_TAB_NAME("Loaded matrices"),
+    COMMAND_PROMPT_TAB_NAME("Command & Tasks"),
 
     // Command's key.
     NEW_MATRIX_COMMAND_KEY("["),

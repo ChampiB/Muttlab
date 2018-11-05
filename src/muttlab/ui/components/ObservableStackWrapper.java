@@ -51,6 +51,16 @@ public class ObservableStackWrapper<T> {
     }
 
     /**
+     * Return the element of the stack corresponding to the index without consuming it.
+     * @return the element corresponding to the index.
+     */
+    public T peek(int index) {
+        if (empty())
+            throw new EmptyStackException();
+        return list.get((index >= 0) ? index : list.size() + index);
+    }
+
+    /**
      * Return the top element of the stack and consuming it.
      * @return the top element.
      */

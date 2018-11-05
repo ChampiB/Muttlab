@@ -103,7 +103,7 @@
 }
 
 .list-view .list-cell:even {
-    -fx-background-color: rgba(42, 42, 42, 255);
+    -fx-background-color: rgba(60, 63, 65, 255);
     -fx-text-fill: rgba(180, 180, 180, 255);
 }
 

@@ -47,8 +47,8 @@ public class CommandAdd extends Command {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 2);
         // Compute the addition between the two last elements of the stack.
-        Matrix e1 = elements.pop();
-        Matrix e2 = elements.pop();
+        Matrix e1 = elements.peek(-1);
+        Matrix e2 = elements.peek(-2).copy();
         e2.add(e1);
         result = e2;
         DisplayHelper.println(out, e2.asString());
@@ -59,6 +59,8 @@ public class CommandAdd extends Command {
      * @param elements: The stack of element.
      */
     protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.pop();
+        elements.pop();
         elements.push(result);
     }
 }

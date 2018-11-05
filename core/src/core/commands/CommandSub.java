@@ -46,8 +46,8 @@ public class CommandSub extends Command {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 2);
         // Execute the subtraction between the two last element in the queue.
-        Matrix e1 = elements.pop();
-        Matrix e2 = elements.pop();
+        Matrix e1 = elements.peek(-1);
+        Matrix e2 = elements.peek(-2).copy();
         e2.sub(e1);
         result = e2;
         DisplayHelper.println(out, e2.asString());
@@ -58,6 +58,8 @@ public class CommandSub extends Command {
      * @param elements: The stack of element.
      */
     protected void flush(ObservableStackWrapper<Matrix> elements) {
+        elements.pop();
+        elements.pop();
         elements.push(result);
     }
 }

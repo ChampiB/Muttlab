@@ -34,26 +34,34 @@ public class HomeModel {
     }
 
     /**
-     * TODO
-     * @return
+     * Check if the current task is running.
+     * @return true if the current task is running and false otherwise.
      */
     boolean isCurrentTaskRunning() {
         if (getRunningTasks().isEmpty())
             return false;
-        CommandTask current = getRunningTasks().get(0);
+        int last = getRunningTasks().size() - 1;
+        CommandTask current = getRunningTasks().get(last);
         return current.hasBeenRun() && !current.isRunOver();
     }
 
+    public void appendInConsoleOutput(String newOutput) {
+        String oldOutput = getConsoleOutput().get();
+        getConsoleOutput().set(oldOutput == null ? newOutput : oldOutput + newOutput);
+    }
+
     /**
-     * TODO
-     * @return
+     * Move the tasks finished into the history.
      */
-    void moveTaskFinishedToHistory() {
+    void moveTasksFinishedToHistory() {
         for (int i = 0; i < getRunningTasks().size(); ++i) {
             CommandTask task = getRunningTasks().get(i);
             if (task.isRunOver()) {
-                task.flush(getMatricesStack());
-                getTasksHistory().add(task);
+                // Flush output.
+                String output = task.flush(getMatricesStack());
+                appendInConsoleOutput(output);
+                // Move task.
+                getTasksHistory().add(0, task);
                 getRunningTasks().remove(i);
             }
         }

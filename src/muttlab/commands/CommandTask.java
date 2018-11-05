@@ -85,10 +85,6 @@ public class CommandTask {
         thread.start();
     }
 
-    // TODO
-    // stream_from ./resources/streaming/matrices_5.csv
-    // reduce_add pad_r
-
     /**
      * Check if the task's run is over.
      * @return true if the task's run is over and false otherwise.
@@ -123,7 +119,7 @@ public class CommandTask {
             s.lines().forEach(line -> output.append(line).append("\n"));
             commandOutput = output.toString();
             if (commandOutput.equals(""))
-                commandOutput = MuttLabStrings.TASK_DONE.toString();
+                commandOutput = MuttLabStrings.TASK_DONE.toString() + "\n";
         } catch (Exception e) {
             commandOutput = MuttLabStrings.FAIL_TO_FLUSH_COMMAND_OUTPUT.toString();
             error = true;
@@ -139,6 +135,6 @@ public class CommandTask {
      */
     @Override
     public String toString() {
-        return command.getName() + "[" + status.toString() + "]: " + commandOutput;
+        return command.getName() + " [" + status.toString() + "]";
     }
 }

@@ -14,14 +14,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import muttlab.MuttLab;
-import muttlab.commands.CommandTask;
 import muttlab.languages.MuttLabStrings;
-import muttlab.math.Matrix;
 
 import java.io.File;
 
@@ -50,14 +50,14 @@ public class HomeView {
         // Create the main vertical layout.
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
-        // Create the tab pane.
-        TabPane tabs = createTabs(vBox);
-        vBox.getChildren().addAll(tabs);
         vBox.setOnKeyPressed(x -> {
             if (x.getCode().equals(KeyCode.ESCAPE)) {
                 System.exit(0);
             }
         });
+        // Create the tab pane.
+        TabPane tabs = createTabs(vBox);
+        vBox.getChildren().addAll(tabs);
         // Frequently check if we need to run tasks.
         Timeline cron = new Timeline(new KeyFrame(Duration.millis(100), new EventHandler<ActionEvent>() {
             @Override
@@ -76,27 +76,16 @@ public class HomeView {
      */
     private Tab createMatricesTab() {
         // Create the list of the stack of matrices.
-        VBox vBox = createPrettyListView(model.getMatrices());
+        VBox vBox = createPrettyListView(model.getMatrices(), 1080, 720);
+        // Create the tab's content.
+        VBox wrapper = new VBox();
+        wrapper.setAlignment(Pos.CENTER);
+        wrapper.getChildren().add(vBox);
         // Create the tab.
         Tab tab = new Tab();
         tab.setClosable(false);
         tab.setText(MuttLabStrings.MATRICES_STACK_TAB_NAME.toString());
-        tab.setContent(vBox);
-        return tab;
-    }
-
-    /**
-     * Create the tab which display the running tasks.
-     * @return the tab.
-     */
-    private Tab createTasksTab() {
-        // Create the list of running tasks.
-        VBox vBox = createPrettyListView(model.getRunningTasks());
-        // Create the tab.
-        Tab tab = new Tab();
-        tab.setClosable(false);
-        tab.setText(MuttLabStrings.RUNNING_TASKS_TAB_NAME.toString());
-        tab.setContent(vBox);
+        tab.setContent(wrapper);
         return tab;
     }
 
@@ -106,41 +95,29 @@ public class HomeView {
      * @param <T>: The type of the observable list .
      * @return a wrapper around the list view.
      */
-    private <T> VBox createPrettyListView(ObservableList<T> observableList) {
+    private <T> VBox createPrettyListView(ObservableList<T> observableList, int width, int height) {
         // Create the list view.
         ListView<T> list = new ListView<>();
-        list.setMinHeight(720);
-        list.setMinWidth(1080);
+        list.setPrefHeight(height - 4);
+        list.setPrefWidth(width - 4);
         list.setItems(observableList);
         // Wrap the list inside a scroll pane.
         ScrollPane sp = new ScrollPane();
-        sp.getStyleClass().add("list-view-wrapper");
         sp.setContent(list);
+        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        sp.setContent(list);
+        sp.setPrefHeight(height);
+        sp.setPrefWidth(width);
         // Wrap the scroll pane inside a VBox.
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().add(sp);
-        sp.setContent(list);
-        sp.setPrefHeight(720);
-        sp.setPrefWidth(1080);
-        sp.setMaxHeight(720);
-        sp.setMaxWidth(1080);
+        vBox.widthProperty().addListener((ov, o, n) -> list.setPrefWidth(width - 4));
+        vBox.heightProperty().addListener((ov, o, n) -> list.setPrefHeight(height - 4));
+        vBox.setMaxWidth(width);
+        vBox.setMaxHeight(height);
         return vBox;
-    }
-
-    /**
-     * Create the tab which display the history of executed tasks.
-     * @return the tab.
-     */
-    private Tab createHistoryTab() {
-        // Create the list of tasks history.
-        VBox vBox = createPrettyListView(model.getTasksHistory());
-        // Create the tab.
-        Tab tab = new Tab();
-        tab.setClosable(false);
-        tab.setText(MuttLabStrings.HISTORY_TAB_NAME.toString());
-        tab.setContent(vBox);
-        return tab;
     }
 
     /**
@@ -155,14 +132,13 @@ public class HomeView {
 
     /**
      * Create the console output.
-     * @param prompt: The command prompt.
      * @return the console output.
      */
-    private ScrollPane createConsoleOutput(TextField prompt) {
+    private ScrollPane createConsoleOutput(int width, int height) {
         // Create the scroll pane.
         ScrollPane scroller = new ScrollPane();
-        scroller.setPrefHeight(100);
-        scroller.prefWidthProperty().bind(prompt.widthProperty());
+        scroller.setPrefHeight(height);
+        scroller.setPrefWidth(width);
         scroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         // Create the output.
@@ -171,8 +147,8 @@ public class HomeView {
         output.textProperty().addListener((obv, o, n) -> scroller.setVvalue(1.0));
         output.getStyleClass().add("white-label");
         output.getStyleClass().add("console-output");
-        output.minWidthProperty().bind(scroller.widthProperty());
-        output.minHeightProperty().bind(scroller.heightProperty());
+        output.setMinHeight(height - 4);
+        output.setMinWidth(width - 4);
         output.setAlignment(Pos.CENTER_LEFT);
         output.setPadding(new Insets(20));
         // Wrap the out in a ScrollPane.
@@ -181,30 +157,54 @@ public class HomeView {
     }
 
     /**
-     * Create the user console.
-     * @return the console.
+     * Create the command prompt.
+     * @return the prompt.
      */
-    private VBox createConsole() {
+    private TextField createPrompt() {
         // Create the prompt.
         TextField prompt = new TextField();
         prompt.setPrefWidth(500);
+        prompt.setMaxWidth(500);
         prompt.setPromptText(MuttLabStrings.COMMAND_PROMPT_HELP_MESSAGE.toString());
         prompt.onKeyPressedProperty().setValue(x -> {
             if (x.getCode().equals(KeyCode.ENTER)) {
                 String command = prompt.getText();
+                model.appendInConsoleOutput("> " + command + "\n");
                 controller.executeCommand(command);
                 prompt.setText("");
             }
         });
+        return prompt;
+    }
+
+
+    /**
+     * Create the body content.
+     * @return the body content.
+     */
+    private VBox createBodyContent() {
+        // Create the muttlab logo.
+        ImageView image = createLogoImage();
+        // Create the list of running tasks.
+        VBox tasks = createPrettyListView(model.getRunningTasks(), 530, 300);
+        // Create the list of tasks history.
+        VBox history = createPrettyListView(model.getTasksHistory(), 530, 300);
         // Create the console output.
-        ScrollPane output = createConsoleOutput(prompt);
-        // Create the console.
-        VBox console = new VBox();
-        console.getChildren().addAll(output, prompt);
-        console.setMaxWidth(1080);
-        console.setAlignment(Pos.CENTER);
-        console.setSpacing(10);
-        return console;
+        ScrollPane console = createConsoleOutput(1080, 150);
+        // Create horizontal panel.
+        HBox hb = new HBox();
+        hb.getChildren().addAll(tasks, history);
+        hb.setSpacing(20);
+        hb.setAlignment(Pos.CENTER);
+        // Create the command prompt.
+        TextField prompt = createPrompt();
+        // Create the tab's content.
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(20);
+        vBox.setMaxWidth(1080);
+        vBox.getChildren().addAll(image, hb, console, prompt);
+        return vBox;
     }
 
     /**
@@ -212,20 +212,15 @@ public class HomeView {
      * @return the tab.
      */
     private Tab createPromptTab() {
+        // Create body.
+        VBox body = new VBox();
+        body.setAlignment(Pos.CENTER);
+        body.getChildren().add(createBodyContent());
         // Create the tab.
         Tab tab = new Tab();
         tab.setClosable(false);
         tab.setText(MuttLabStrings.COMMAND_PROMPT_TAB_NAME.toString());
-        // Create the muttlab logo.
-        ImageView image = createLogoImage();
-        // Create the console.
-        VBox console = createConsole();
-        // Create the tab's content.
-        VBox content = new VBox();
-        content.setAlignment(Pos.CENTER);
-        content.setSpacing(20);
-        content.getChildren().addAll(image, console);
-        tab.setContent(content);
+        tab.setContent(body);
         return tab;
     }
 
@@ -237,9 +232,7 @@ public class HomeView {
         TabPane pane = new TabPane();
         pane.getTabs().addAll(
                 createPromptTab(),
-                createMatricesTab(),
-                createTasksTab(),
-                createHistoryTab()
+                createMatricesTab()
         );
         pane.prefHeightProperty().bind(parent.heightProperty());
         return pane;

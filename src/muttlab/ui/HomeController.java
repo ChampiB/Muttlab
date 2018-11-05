@@ -31,7 +31,7 @@ public class HomeController {
      */
     void updateTasksQueue() {
         if (!model.isCurrentTaskRunning()) {
-            model.moveTaskFinishedToHistory();
+            model.moveTasksFinishedToHistory();
             model.runNext();
         }
     }
