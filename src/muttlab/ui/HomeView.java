@@ -54,7 +54,7 @@ public class HomeView {
      */
     public String pickFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Resource File"); // TODO
+        fileChooser.setTitle(MuttLabStrings.CHOOSE_FILE.toString());
         File file = fileChooser.showOpenDialog(primaryStage);
         return (file == null) ? "" : file.getPath();
     }
@@ -88,7 +88,7 @@ public class HomeView {
      */
     private Tab createMatricesTab() {
         // Create the list of the stack of matrices.
-        VBox vBox = createPrettyStack("Stack", model.getMatrices(), 1080, 720); // TODO
+        VBox vBox = createPrettyStack(MuttLabStrings.STACK.toString(), model.getMatrices(), 1080, 720);
         // Create the tab's content.
         VBox wrapper = new VBox();
         wrapper.setAlignment(Pos.CENTER);
@@ -145,21 +145,21 @@ public class HomeView {
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("white-label");
         // Create the columns of the table.
-        TableColumn nameCol = new TableColumn<Command, String>("Name"); // TODO
+        TableColumn nameCol = new TableColumn<Command, String>(MuttLabStrings.NAME.toString());
         nameCol.setCellValueFactory(new PropertyValueFactory("name"));
         nameCol.getStyleClass().add("center-left-align");
         nameCol.setPrefWidth(150);
-        TableColumn statusCol = new TableColumn<CommandTask, Image>("Status"); // TODO
+        TableColumn statusCol = new TableColumn<CommandTask, Image>(MuttLabStrings.STATUS.toString());
         statusCol.setCellValueFactory(new PropertyValueFactory("status"));
         statusCol.getStyleClass().add("center-align");
         statusCol.setPrefWidth(100);
-        TableColumn outputCol = new TableColumn<CommandTask, Image>("Output"); // TODO
+        TableColumn outputCol = new TableColumn<CommandTask, Image>(MuttLabStrings.OUTPUT.toString());
         outputCol.setCellValueFactory(new PropertyValueFactory("output"));
         outputCol.getStyleClass().add("center-left-align");
         outputCol.setMinWidth(width - 256);
         // Create the list view.
         TableView<CommandTask> table = new TableView<>();
-        Label label = new Label("Table is empty."); // TODO
+        Label label = new Label(MuttLabStrings.TABLE_IS_EMPTY.toString());
         label.getStyleClass().add("white-label");
         table.setPlaceholder(label);
         table.getStyleClass().add("test");
@@ -202,7 +202,7 @@ public class HomeView {
      */
     private VBox createConsoleOutput(int width, int height) {
         // Create the title.
-        Label titleLabel = new Label("Console output"); // TODO
+        Label titleLabel = new Label(MuttLabStrings.CONSOLE_OUTPUT.toString());
         titleLabel.getStyleClass().add("white-label");
         // Create the scroll pane.
         ScrollPane scroller = new ScrollPane();
@@ -258,9 +258,9 @@ public class HomeView {
         // Create the muttlab logo.
         ImageView image = createLogoImage();
         // Create the list of running tasks.
-        VBox tasks = createPrettyTaskTable("Running tasks", model.getRunningTasks(), 530, 300); // TODO
+        VBox tasks = createPrettyTaskTable(MuttLabStrings.RUNNING_TASKS.toString(), model.getRunningTasks(), 530, 300);
         // Create the list of tasks history.
-        VBox history = createPrettyTaskTable("History", model.getTasksHistory(), 530, 300); // TODO
+        VBox history = createPrettyTaskTable(MuttLabStrings.HISTORY.toString(), model.getTasksHistory(), 530, 300);
         // Create the console output.
         VBox console = createConsoleOutput(1080, 150);
         // Create horizontal panel.

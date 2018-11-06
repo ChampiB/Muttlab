@@ -134,11 +134,6 @@
     -fx-fill: rgba(180, 180, 180, 255);
 }
 
-.table-view .placeholder {
-    -fx-fill-text: rgba(180, 180, 180, 255);
-    // TODO
-}
-
 .table-row-cell:odd {
     -fx-background-color: rgba(60, 63, 65, 255);
 }

@@ -53,6 +53,7 @@ public enum MuttLabStrings {
     FILTER_WIDTH_COMMAND_NAME("filter width"),
 
     // Command's help message.
+    GLOBAL_HELP_MESSAGE("The following commands are available (use 'help <command_name>' to get further information):"),
     NEW_MATRIX_HELP_MESSAGE("Synopsis: COMMAND_NAME content_of_matrix\nDescription: Create a new matrix and add it on the top of the stack.\nExample: '[ 1 2; 3 4 ]'"),
     ADD_HELP_MESSAGE("Synopsis: COMMAND_NAME\nDescription: Add the two matrices on the top of the stack.\nExample: '+'"),
     SUB_HELP_MESSAGE("Synopsis: COMMAND_NAME\nDescription: Subtract the two matrices on the top of the stack.\nExample: '-'"),
@@ -74,47 +75,45 @@ public enum MuttLabStrings {
     MAP_EW_MUL_HELP_MESSAGE("Synopsis: COMMAND_NAME k\nDescription: Multiply all the matrices element wise the number passed as parameter.\nExample: 'map_ew_mul 42'"),
     FILTER_WIDTH_HELP_MESSAGE("Synopsis: COMMAND_NAME width\nDescription: Keep only the matrix that the width specified as parameter.\nExample: 'filter_width 3'"),
 
-
-
-
-
-    // TODO clean it
-    CURRENT_STREAM_IS_NOT_PRESENT("There is currently no stream available."),
+    // reduce_add's parameters.
     REDUCER_NAME_FIRST("first"),
     REDUCER_NAME_LPAD("pad_l"),
     REDUCER_NAME_RPAD("pad_r"),
-    TASK_DONE("Done."),
+
+    // sort's parameters.
     BY_SUM("<+"),
     BY_MIN("<m"),
     BY_MAX("<M"),
 
-    WELCOME_MESSAGE("\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱ \n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏   Welcome to MuttLab!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏(textart4u.blogspot.com)\n\nMuttLab is an amazing new, matrix calculator.\nType 'help' if you need help.\n"),
-    GOODBYE_MESSAGE("Thank you for using MuttLab\n\n╱▔╲╱▔▔▔▔╲╱▔╲\n▏ ╱  ▂ ▂ ╲ ▕\n╲╳▏ ┏▅┐ ┏▅┐╳╱\n  ▏╭╰━╯╰━┻━━╮\n╱▔▏▕     ▕▔▔▔▏\n▏ ▏▕      ╲▂╱▏\n▏ ▏ ╲   ▕╲ ┃▕╱▏\n▏ ╲  ▔▔▔▔▔▔▔▔▔▏     hee, hee, hee!\n▏ ▏╲▂▂▂▂▂▂▂▂▂╱\n▏ ▏        ▕\n▏ ▏        ▕\nThank you for using MuttLab.  Good bye.\n"),
+    // Error messages.
     NOT_ENOUGH_ELEMENT_IN_QUEUE("There is not enough matrix in the queue."),
-    INVALID_OPERATION_ERROR_MESSAGE("The operation is not valid."),
-    FAIL_TO_WRITE_IN_FILE("Can't write in file."),
     BAD_NUMBER_OF_PARAMETERS("The number of parameters is not correct."),
     NOT_VALID_FLOAT("Float is not valid."),
     NOT_VALID_INT("Integer is not valid."),
     NOT_VALID_MATRIX("Matrix is not valid."),
     COMMAND_FAILED_CHECK_LOG("The command has failed. (Check the logs for further information)"),
+    QUIT_ERROR_MESSAGE("Quit what?"),
+    CURRENT_STREAM_IS_NOT_PRESENT("There is currently no stream available."),
     IO_EXCEPTION("IOException: Impossible to open, create, read or write into the file. (Check the logs for further information)"),
     UNSUPPORTED_COMMAND_PARAMETER("Command's parameter is not supported. (Use the help command for further information)"),
-    UNSUPPORTED_OPERATION("Operation is not supported."),
-
     FAIL_TO_FLUSH_COMMAND_OUTPUT("Fail to flush command output."),
-    COMMAND_PROMPT_HELP_MESSAGE("Write the command, press enter and follow it execution in the other tabs."),
     NOT_VALID_MATRIX_SIZE("Size of matrix is not valid."),
     MATRIX_ELEMENT_DOES_NOT_EXIST("The matrix's element does not exist."),
 
-    HELP_MESSAGE(""),
+    // GUI labels.
+    CHOOSE_FILE("Choose Resource File"),
+    NAME("Name"),
+    STACK("Stack"),
+    STATUS("Status"),
+    OUTPUT("Output"),
+    TABLE_IS_EMPTY("Table is empty."),
+    CONSOLE_OUTPUT("Console output"),
+    RUNNING_TASKS("Running tasks"),
+    HISTORY("History"),
+    COMMAND_PROMPT_HELP_MESSAGE("Write the command, press enter and follow it execution in the other tabs."),
 
-    COMMAND_NAME_NOT_FOUND_HELP_MESSAGE("You are using MatBench.\n\nYour command words are:\n   show [ + - * .* dup help script quit"),
-    GLOBAL_HELP_MESSAGE("The following commands are available (use 'help <command_name>' to get further information):"),
-    QUIT_ERROR_MESSAGE("Quit what?"),
-    NEW_MATRIX_ERROR_MESSAGE("what's the matrix?"),
-    FILE_NAME_NOT_FOUND_ERROR_MESSAGE("File not found."),
-    SAVE_CANT_WRITE_IN_FILE_ERROR_MESSAGE("Can't write the matrix in the file."),
+    // Default command output.
+    TASK_DONE("Done."),
     ;
 
     private final String str;
