@@ -50,19 +50,17 @@ public class CommandMul extends Command {
             // Check the number of element in the stack.
             CommandHelper.checkAtLeastInTheStack(elements, 1);
             // Multiplication with a scalar.
-            Matrix e1 = elements.pop();
-            e1.mul(ConverterHelper.toFloat(args[1]));
-            result = e1;
-            DisplayHelper.println(out, e1.asString());
+            result = elements.peek(0).copy();
+            result.mul(ConverterHelper.toFloat(args[1]));
+            DisplayHelper.println(out, result.asString());
         } else {
             // Check the number of element in the stack.
             CommandHelper.checkAtLeastInTheStack(elements, 2);
             // Multiplication with a matrix.
-            Matrix e1 = elements.peek(-1);
-            Matrix e2 = elements.peek(-2).copy();
-            e2.mul(e1);
-            result = e2;
-            DisplayHelper.println(out, e2.asString());
+            Matrix e1 = elements.peek(0);
+            result = elements.peek(1).copy();
+            result.mul(e1);
+            DisplayHelper.println(out, result.asString());
         }
     }
 
@@ -71,7 +69,8 @@ public class CommandMul extends Command {
      * @param elements: The stack of element.
      */
     protected void flush(ObservableStackWrapper<Matrix> elements) {
-        elements.pop();
+        if (getCommand().split(" ").length == 1)
+            elements.pop();
         elements.pop();
         elements.push(result);
     }

@@ -57,7 +57,7 @@ public class ObservableStackWrapper<T> {
     public T peek(int index) {
         if (empty())
             throw new EmptyStackException();
-        return list.get((index >= 0) ? index : list.size() + index);
+        return list.get(index);
     }
 
     /**

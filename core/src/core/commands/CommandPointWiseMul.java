@@ -46,8 +46,8 @@ public class CommandPointWiseMul extends Command {
         // Check the number of element in the stack.
         CommandHelper.checkAtLeastInTheStack(elements, 2);
         // Compute the element wise multiplication.
-        Matrix e1 = elements.peek(-1);
-        Matrix e2 = elements.peek(-2).copy();
+        Matrix e1 = elements.peek(0);
+        Matrix e2 = elements.peek(1).copy();
         e2.pointWiseMul(e1);
         result = e2;
         DisplayHelper.println(out, e2.asString());

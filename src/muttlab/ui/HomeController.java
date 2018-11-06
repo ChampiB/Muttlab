@@ -14,16 +14,8 @@ public class HomeController {
 
     public static HomeController get() { return instance; }
 
-    private HomeController() {}
-
-    /**
-     * Set the model.
-     * @param model: The home model.
-     * @return this.
-     */
-    public HomeController setModel(HomeModel model) {
-        this.model = model;
-        return this;
+    private HomeController() {
+        model = HomeModel.get();
     }
 
     /**
@@ -31,7 +23,7 @@ public class HomeController {
      */
     synchronized void updateTasksQueue() {
         if (!model.isCurrentTaskRunning()) {
-            model.moveTasksFinishedToHistory();
+            model.moveTaskFinishedToHistory();
             model.runNext();
         }
     }

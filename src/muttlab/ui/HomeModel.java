@@ -4,9 +4,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import muttlab.commands.Command;
 import muttlab.commands.CommandTask;
 import muttlab.math.Matrix;
 import muttlab.ui.components.ObservableStackWrapper;
+
+import java.util.Iterator;
 
 public class HomeModel {
 
@@ -16,9 +19,13 @@ public class HomeModel {
     private StringProperty consoleOutput;
 
     /**
-     * Create the home model.
+     * Singleton design pattern.
      */
-    public HomeModel() {
+    private static HomeModel instance = new HomeModel();
+
+    public static HomeModel get() { return instance; }
+
+    private HomeModel() {
         runningTasks = FXCollections.observableArrayList();
         tasksHistory = FXCollections.observableArrayList();
         matrices = new ObservableStackWrapper<>();
@@ -45,6 +52,10 @@ public class HomeModel {
         return current.hasBeenRun() && !current.isRunOver();
     }
 
+    /**
+     * Append text in the console.
+     * @param newOutput: The text to append.
+     */
     public void appendInConsoleOutput(String newOutput) {
         String oldOutput = getConsoleOutput().get();
         getConsoleOutput().set(oldOutput == null ? newOutput : oldOutput + newOutput);
@@ -53,16 +64,18 @@ public class HomeModel {
     /**
      * Move the tasks finished into the history.
      */
-    void moveTasksFinishedToHistory() {
-        for (int i = 0; i < getRunningTasks().size(); ++i) {
+    void moveTaskFinishedToHistory() {
+        for (int i = 0; i < getRunningTasks().size(); i++) {
             CommandTask task = getRunningTasks().get(i);
             if (task.isRunOver()) {
+                System.out.println();
                 // Flush output.
                 String output = task.flush(getMatricesStack());
                 appendInConsoleOutput(output);
                 // Move task.
                 getTasksHistory().add(0, task);
-                getRunningTasks().remove(i);
+                getRunningTasks().removeIf(t -> t == task);
+                break;
             }
         }
     }
@@ -73,7 +86,8 @@ public class HomeModel {
     void runNext() {
         if (getRunningTasks().isEmpty())
             return;
-        getRunningTasks().get(0).execute(getMatricesStack());
+        int last = getRunningTasks().size() - 1;
+        getRunningTasks().get(last).execute(getMatricesStack());
     }
 
     /**

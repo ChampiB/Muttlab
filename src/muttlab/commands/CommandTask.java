@@ -1,5 +1,7 @@
 package muttlab.commands;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import muttlab.exceptions.UserException;
 import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
@@ -23,12 +25,23 @@ public class CommandTask {
      * The tasks' status.
      */
     enum Status {
-        WAITING_FOR_RUN,
-        RUNNING,
-        RUN_SUCCESS,
-        RUN_FAIL,
-        TASK_FAIL,
-        TASK_SUCCESS
+        WAITING_FOR_RUN("./src/muttlab/ui/img/not-started-status.png"),
+        RUNNING("./src/muttlab/ui/img/running-status.png"),
+        RUN_SUCCESS("./src/muttlab/ui/img/running-status.png"),
+        RUN_FAIL("./src/muttlab/ui/img/running-status.png"),
+        TASK_FAIL("./src/muttlab/ui/img/fail-status.png"),
+        TASK_SUCCESS("./src/muttlab/ui/img/success-status.png");
+
+        String text;
+
+        Status(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
     }
 
     /**
@@ -130,11 +143,31 @@ public class CommandTask {
     }
 
     /**
-     * Convert the task into a string.
-     * @return the string.
+     * Getter.
+     * @return the task's output.
      */
-    @Override
-    public String toString() {
-        return command.getName() + " [" + status.toString() + "]";
+    public String getOutput() {
+        return commandOutput;
+    }
+
+    /**
+     * Getter.
+     * @return the task's name.
+     */
+    public String getName() {
+        return command.getName();
+    }
+
+    /**
+     * Getter.
+     * @return the task's status.
+     */
+    public ImageView getStatus() {
+        File file = new File(status.toString());
+        Image img = new Image(file.toURI().toString());
+        ImageView image = new ImageView(img);
+        image.setFitHeight(20);
+        image.setFitWidth(20);
+        return image;
     }
 }

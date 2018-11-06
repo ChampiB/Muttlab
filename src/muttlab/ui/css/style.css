@@ -111,3 +111,42 @@
     -fx-background-color: rgba(60, 63, 65, 255);
     -fx-text-fill: rgba(180, 180, 180, 255);
 }
+
+//
+// Center property
+//
+.center-align {
+    -fx-alignment: CENTER;
+}
+
+.center-left-align {
+    -fx-alignment: CENTER-LEFT;
+}
+
+//
+// TableView style
+//
+.table-view {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+.table-view .column-header-background .nested-column-header .column-header {
+    -fx-fill: rgba(180, 180, 180, 255);
+}
+
+.table-view .placeholder {
+    -fx-fill-text: rgba(180, 180, 180, 255);
+    // TODO
+}
+
+.table-row-cell:odd {
+    -fx-background-color: rgba(60, 63, 65, 255);
+}
+
+.table-row-cell:even {
+    -fx-background-color: rgba(42, 42, 42, 255);
+}
+
+.table-row-cell .text {
+    -fx-fill: rgba(180, 180, 180, 255);
+}

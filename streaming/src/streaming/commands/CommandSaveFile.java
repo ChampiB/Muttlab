@@ -7,6 +7,7 @@ import muttlab.languages.MuttLabStrings;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Matrix;
+import muttlab.ui.HomeView;
 import muttlab.ui.components.ObservableStackWrapper;
 import streaming.CurrentStream;
 
@@ -18,14 +19,19 @@ import java.util.stream.Collectors;
 
 public class CommandSaveFile extends Command {
 
-    private String fileName = null;
+    private String fileName;
     private List<Matrix> matrices = null;
 
     /**
      * Constructor.
      * @param command : The command line.
      */
-    public CommandSaveFile(String command) { setCommand(command); }
+    public CommandSaveFile(String command) {
+        setCommand(command);
+        // Get the file name.
+        String[] args = getCommand().split(" ");
+        fileName = (args.length < 2) ? HomeView.get().pickFile() : args[1];
+    }
 
     /**
      * Getter method.
@@ -67,10 +73,6 @@ public class CommandSaveFile extends Command {
     public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
         // Check if the current stream is present.
         CurrentStream.checkIsPresent();
-        // Check that there is at least one parameter.
-        String[] args = getCommand().split(" ");
-        CommandHelper.checkNumberOfParameters(args, 2, 2);
-        fileName = args[1];
         // Compute the stream.
         CurrentStream.getInstance().getCurrentStream().ifPresent(s -> matrices = s.collect(Collectors.toList()));
         CurrentStream.getInstance().setCurrentStream(null);

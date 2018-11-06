@@ -2,8 +2,6 @@ package muttlab;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import muttlab.ui.HomeController;
-import muttlab.ui.HomeModel;
 import muttlab.ui.HomeView;
 
 public class Main extends Application {
@@ -15,9 +13,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Create the graphical user interface, using the MVC design pattern.
-        HomeModel model = new HomeModel();
-        HomeController controller = HomeController.get().setModel(model);
-        HomeView view = new HomeView(controller, model);
+        HomeView view = HomeView.get();
         view.show(primaryStage);
     }
 

@@ -1,12 +1,12 @@
 package streaming.commands;
 
 import muttlab.commands.Command;
-import muttlab.helpers.CommandHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.DenseMatrix;
 import muttlab.math.Matrix;
+import muttlab.ui.HomeView;
 import muttlab.ui.components.ObservableStackWrapper;
 import streaming.CurrentStream;
 
@@ -17,11 +17,19 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public class CommandStreamFrom extends Command {
+
+    private String fileName;
+
     /**
      * Constructor.
      * @param command : The command line.
      */
-    public CommandStreamFrom(String command) { setCommand(command); }
+    public CommandStreamFrom(String command) {
+        setCommand(command);
+        // Get the file name.
+        String[] args = getCommand().split(" ");
+        fileName = (args.length < 2) ? HomeView.get().pickFile() : args[1];
+    }
 
     /**
      * Getter method.
@@ -61,12 +69,9 @@ public class CommandStreamFrom extends Command {
      */
     @Override
     public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
-        // Check that there is at least one parameter.
-        String[] args = getCommand().split(" ");
-        CommandHelper.checkNumberOfParameters(args, 2, 2);
         // Load the matrix for the file and change the current stream.
         Stream<Matrix> s = Files
-            .lines(Paths.get(args[1]))
+            .lines(Paths.get(fileName))
             .map(this::loadMatrix)
             .filter(Objects::nonNull);
         CurrentStream.getInstance().setCurrentStream(s);

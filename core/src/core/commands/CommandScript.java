@@ -5,16 +5,20 @@ import muttlab.helpers.CommandHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
 import muttlab.ui.HomeController;
+import muttlab.ui.HomeView;
 import muttlab.ui.components.ObservableStackWrapper;
 
+import javax.swing.text.html.ListView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CommandScript extends Command {
 
-    private String fileName = null;
+    private String fileName;
 
     /**
      * Constructor.
@@ -22,6 +26,9 @@ public class CommandScript extends Command {
      */
     public CommandScript(String command) {
         setCommand(command);
+        // Get the file name.
+        String[] args = getCommand().split(" ");
+        fileName = (args.length < 2) ? HomeView.get().pickFile() : args[1];
     }
 
     /**
@@ -47,12 +54,7 @@ public class CommandScript extends Command {
      * @param elements : The current stack of matrix.
      */
     @Override
-    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {
-        // Check that there is at least one parameter.
-        String[] args = getCommand().split(" ");
-        CommandHelper.checkNumberOfParameters(args, 2, 2);
-        fileName = args[1];
-    }
+    public void execute(OutputStream out, ObservableStackWrapper<Matrix> elements) throws Exception {}
 
     /**
      * Flush the command output.
