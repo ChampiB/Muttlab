@@ -24,8 +24,11 @@ import muttlab.MuttLab;
 import muttlab.commands.Command;
 import muttlab.commands.CommandTask;
 import muttlab.languages.MuttLabStrings;
+import muttlab.ui.components.TaskTable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeView {
 
@@ -136,57 +139,6 @@ public class HomeView {
     }
 
     /**
-     * Create a pretty task table.
-     * @param observableList: The observable list to display.
-     * @return a wrapper around the list view.
-     */
-    private VBox createPrettyTaskTable(String title, ObservableList<CommandTask> observableList, int width, int height) {
-        // Create the title.
-        Label titleLabel = new Label(title);
-        titleLabel.getStyleClass().add("white-label");
-        // Create the columns of the table.
-        TableColumn nameCol = new TableColumn<Command, String>(MuttLabStrings.NAME.toString());
-        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
-        nameCol.getStyleClass().add("center-left-align");
-        nameCol.setPrefWidth(150);
-        TableColumn statusCol = new TableColumn<CommandTask, Image>(MuttLabStrings.STATUS.toString());
-        statusCol.setCellValueFactory(new PropertyValueFactory("status"));
-        statusCol.getStyleClass().add("center-align");
-        statusCol.setPrefWidth(100);
-        TableColumn outputCol = new TableColumn<CommandTask, Image>(MuttLabStrings.OUTPUT.toString());
-        outputCol.setCellValueFactory(new PropertyValueFactory("output"));
-        outputCol.getStyleClass().add("center-left-align");
-        outputCol.setMinWidth(width - 256);
-        // Create the list view.
-        TableView<CommandTask> table = new TableView<>();
-        Label label = new Label(MuttLabStrings.TABLE_IS_EMPTY.toString());
-        label.getStyleClass().add("white-label");
-        table.setPlaceholder(label);
-        table.getStyleClass().add("test");
-        table.setPrefHeight(height - 4);
-        table.setPrefWidth(width - 4);
-        table.setItems(observableList);
-        table.getColumns().addAll(nameCol, statusCol, outputCol);
-        // Wrap the list inside a scroll pane.
-        ScrollPane sp = new ScrollPane();
-        sp.setContent(table);
-        sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        sp.widthProperty().addListener((ov, o, n) -> table.setPrefWidth(width - 4));
-        sp.heightProperty().addListener((ov, o, n) -> table.setPrefHeight(height - 20));
-        sp.setContent(table);
-        sp.setPrefHeight(height);
-        sp.setPrefWidth(width);
-        // Wrap the scroll pane inside a VBox.
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(titleLabel, sp);
-        vBox.setMaxWidth(width);
-        vBox.setMaxHeight(height);
-        return vBox;
-    }
-
-    /**
      * Load the muttlab logo.
      * @return the image containing the logo.
      */
@@ -251,17 +203,139 @@ public class HomeView {
     }
 
     /**
+     * Getter.
+     * @param width: The column's width.
+     * @return the name column.
+     */
+    private TableColumn getNameColumn(int width) {
+        // Create the name column.
+        TableColumn nameCol = new TableColumn<Command, String>(MuttLabStrings.NAME.toString());
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
+        nameCol.getStyleClass().add("center-left-align");
+        nameCol.setPrefWidth(width);
+        return nameCol;
+    }
+
+    /**
+     * Getter.
+     * @param width: The column's width.
+     * @return the name column.
+     */
+    private TableColumn getStatusColumn(int width) {
+        // Create the status column.
+        TableColumn statusCol = new TableColumn<CommandTask, Image>(MuttLabStrings.STATUS.toString());
+        statusCol.setCellValueFactory(new PropertyValueFactory("status"));
+        statusCol.getStyleClass().add("center-align");
+        statusCol.setPrefWidth(width);
+        return statusCol;
+    }
+
+    /**
+     * Getter.
+     * @param width: The column's width.
+     * @return the name column.
+     */
+    TableColumn getOutputColumn(int width) {
+        // Create the output column.
+        TableColumn outputCol = new TableColumn<CommandTask, Image>(MuttLabStrings.OUTPUT.toString());
+        outputCol.setCellValueFactory(new PropertyValueFactory("output"));
+        outputCol.getStyleClass().add("center-left-align");
+        outputCol.setMinWidth(width);
+        return outputCol;
+    }
+
+    /**
+     * Getter.
+     * @param width: The column's width.
+     * @return the column that contains button to start task.
+     */
+    TableColumn getRunButtonColumn(int width) {
+        // Create the output column.
+        TableColumn runButtonCol = new TableColumn<CommandTask, Button>("");
+        runButtonCol.setCellValueFactory(new PropertyValueFactory("runButton"));
+        runButtonCol.getStyleClass().add("center-left-align");
+        runButtonCol.setMinWidth(width);
+        return runButtonCol;
+    }
+
+    /**
+     * Getter.
+     * @param width: The width of the table.
+     * @return the columns of the history table.
+     */
+    private List<TableColumn> getColumnsOfHistoryTable(int width) {
+        // Create the columns.
+        List<TableColumn> columns = new ArrayList<>();
+        columns.add(getNameColumn(150));
+        columns.add(getStatusColumn(100));
+        columns.add(getOutputColumn(width - 256));
+        return columns;
+    }
+
+    /**
+     * Create a pretty task table.
+     * @param width: The table's width.
+     * @param height: The table's height.
+     * @return a wrapper around the list view.
+     */
+    private VBox createHistoryTaskTable(int width, int height) {
+        // Get the table's column.
+        List<TableColumn> columns = getColumnsOfHistoryTable(width);
+        // Build the table.
+        TaskTable builder = new TaskTable()
+                .setTitle(MuttLabStrings.HISTORY.toString())
+                .setPlaceholder(MuttLabStrings.TABLE_IS_EMPTY.toString())
+                .setSize(width, height)
+                .setContent(model.getTasksHistory())
+                .setColumns(columns);
+        return builder.build();
+    }
+
+    /**
+     * Getter.
+     * @param width: The width of the table.
+     * @return the columns of the history table.
+     */
+    private List<TableColumn> getColumnsOfRunningTable(int width) {
+        // Create the columns.
+        List<TableColumn> columns = new ArrayList<>();
+        columns.add(getNameColumn(width - 126));
+        columns.add(getStatusColumn(100));
+        columns.add(getRunButtonColumn(100));
+        return columns;
+    }
+
+    /**
+     * Create a pretty task table.
+     * @param width: The table's width.
+     * @param height: The table's height.
+     * @return a wrapper around the list view.
+     */
+    private VBox createRunningTaskTable(int width, int height) {
+        // Get the table's column.
+        List<TableColumn> columns = getColumnsOfRunningTable(width);
+        // Build the table.
+        TaskTable builder = new TaskTable()
+                .setTitle(MuttLabStrings.RUNNING_TASKS.toString())
+                .setPlaceholder(MuttLabStrings.TABLE_IS_EMPTY.toString())
+                .setSize(width, height)
+                .setContent(model.getRunningTasks())
+                .setColumns(columns);
+        return builder.build();
+    }
+
+    /**
      * Create the body content.
      * @return the body content.
      */
     private VBox createBodyContent() {
-        // Create the muttlab logo.
+        // Tables' size.
+        int width = 530;
+        int height = 300;
+        // Create components.
         ImageView image = createLogoImage();
-        // Create the list of running tasks.
-        VBox tasks = createPrettyTaskTable(MuttLabStrings.RUNNING_TASKS.toString(), model.getRunningTasks(), 530, 300);
-        // Create the list of tasks history.
-        VBox history = createPrettyTaskTable(MuttLabStrings.HISTORY.toString(), model.getTasksHistory(), 530, 300);
-        // Create the console output.
+        VBox tasks = createRunningTaskTable(width, height);
+        VBox history = createHistoryTaskTable(width, height);
         VBox console = createConsoleOutput(1080, 150);
         // Create horizontal panel.
         HBox hb = new HBox();

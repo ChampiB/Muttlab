@@ -68,7 +68,6 @@ public class HomeModel {
         for (int i = 0; i < getRunningTasks().size(); i++) {
             CommandTask task = getRunningTasks().get(i);
             if (task.isRunOver()) {
-                System.out.println();
                 // Flush output.
                 String output = task.flush(getMatricesStack());
                 appendInConsoleOutput(output);
@@ -87,7 +86,7 @@ public class HomeModel {
         if (getRunningTasks().isEmpty())
             return;
         int last = getRunningTasks().size() - 1;
-        getRunningTasks().get(last).execute(getMatricesStack());
+        getRunningTasks().get(last).execute();
     }
 
     /**

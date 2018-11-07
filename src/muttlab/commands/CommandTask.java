@@ -1,5 +1,6 @@
 package muttlab.commands;
 
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import muttlab.exceptions.UserException;
@@ -19,6 +20,7 @@ public class CommandTask {
     private PipedOutputStream out;
     private Command command;
     private String commandOutput;
+    private ObservableStackWrapper<Matrix> matrices;
     private Status status;
 
     /**
@@ -48,14 +50,15 @@ public class CommandTask {
      * Create the command task, which is a wrapper around a command.
      * @param command: The command to wrap.
      */
-    public CommandTask(Command command) {
+    public CommandTask(Command command, ObservableStackWrapper<Matrix> matrices) {
         try {
             in = new PipedInputStream();
             out = new PipedOutputStream(in);
         } catch (Exception e) {
             Logging.log(LoggingLevel.ERROR, e.getMessage());
         }
-        status = Status.WAITING_FOR_RUN;
+        this.matrices = matrices;
+        this.status = Status.WAITING_FOR_RUN;
         this.command = command;
     }
 
@@ -83,12 +86,11 @@ public class CommandTask {
 
     /**
      * Execute the command.
-     * @param stack: The current stack of matrices.
      */
-    public void execute(ObservableStackWrapper<Matrix> stack) {
+    public void execute() {
         Thread thread = new Thread(() -> {
             status = Status.RUNNING;
-            if (handleErrorWrapper(() -> command.execute(out, stack))) {
+            if (handleErrorWrapper(() -> command.execute(out, matrices))) {
                 status = Status.RUN_FAIL;
             } else {
                 status = Status.RUN_SUCCESS;
@@ -169,5 +171,20 @@ public class CommandTask {
         image.setFitHeight(20);
         image.setFitWidth(20);
         return image;
+    }
+
+    /**
+     * Getter.
+     * @return the button that run the task.
+     */
+    public Button getRunButton() {
+        Button runButton = new Button();
+        // runButton.getStyleClass().add("run-button");
+        runButton.setOnAction(event -> {
+            if (hasBeenRun())
+                return;
+            this.execute();
+        });
+        return runButton;
     }
 }

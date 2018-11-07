@@ -22,8 +22,8 @@ public class HomeController {
      * Update the tasks' queue.
      */
     synchronized void updateTasksQueue() {
+        model.moveTaskFinishedToHistory();
         if (!model.isCurrentTaskRunning()) {
-            model.moveTaskFinishedToHistory();
             model.runNext();
         }
     }
@@ -33,6 +33,6 @@ public class HomeController {
      * @param command: The command line.
      */
     synchronized public void handleNewCommand(String command) {
-        model.handleNewCommand(new CommandTask(CommandFactory.create(command)));
+        model.handleNewCommand(new CommandTask(CommandFactory.create(command), model.getMatricesStack()));
     }
 }
