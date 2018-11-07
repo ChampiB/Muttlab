@@ -3,6 +3,7 @@ package muttlab;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import muttlab.ui.HomeView;
+import muttlab.ui.TasksManager;
 
 public class Main extends Application {
     /**
@@ -12,6 +13,8 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Create the task manager.
+        TasksManager.init();
         // Create the graphical user interface, using the MVC design pattern.
         HomeView view = HomeView.get();
         view.show(primaryStage);

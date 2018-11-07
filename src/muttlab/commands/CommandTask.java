@@ -12,6 +12,7 @@ import muttlab.languages.MuttLabStrings;
 import muttlab.loggers.Logging;
 import muttlab.loggers.LoggingLevel;
 import muttlab.math.Matrix;
+import muttlab.ui.TasksManager;
 import muttlab.ui.components.ObservableStackWrapper;
 
 import java.io.*;
@@ -71,6 +72,10 @@ public class CommandTask {
         this.matrices = matrices;
         this.status = new SimpleObjectProperty<>();
         this.status.setValue(Status.WAITING_FOR_RUN);
+        this.status.addListener((obv, o, n) -> {
+            if (n != Status.WAITING_FOR_RUN)
+                runButton.setVisible(false);
+        });
         this.command = command;
         this.runButton = createRunButton();
     }
@@ -106,7 +111,9 @@ public class CommandTask {
                 (handleErrorWrapper(() -> command.execute(out, matrices))) ? Status.RUN_FAIL : Status.RUN_SUCCESS,
                 threadPool
         );
-        future.thenAccept(s -> status.setValue(s));
+        future.thenAccept(s ->
+                TasksManager.push(() -> status.setValue(s))
+        );
     }
 
     /**

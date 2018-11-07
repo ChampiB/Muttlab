@@ -78,10 +78,6 @@ public class HomeView {
         // Create the tab pane.
         TabPane tabs = createTabs(vBox);
         vBox.getChildren().addAll(tabs);
-        // Frequently check if we need to run tasks.
-        Timeline cron = new Timeline(new KeyFrame(Duration.millis(100), event -> controller.updateTasksQueue()));
-        cron.setCycleCount(Timeline.INDEFINITE);
-        cron.play();
         return vBox;
     }
 
