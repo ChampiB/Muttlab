@@ -106,6 +106,7 @@ public enum MuttLabStrings {
     STACK("Stack"),
     STATUS("Status"),
     OUTPUT("Output"),
+    RUN("Run"),
     TABLE_IS_EMPTY("Table is empty."),
     CONSOLE_OUTPUT("Console output"),
     RUNNING_TASKS("Running tasks"),

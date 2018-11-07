@@ -251,9 +251,9 @@ public class HomeView {
      */
     TableColumn getRunButtonColumn(int width) {
         // Create the output column.
-        TableColumn runButtonCol = new TableColumn<CommandTask, Button>("");
+        TableColumn runButtonCol = new TableColumn<CommandTask, Button>(MuttLabStrings.RUN.toString());
         runButtonCol.setCellValueFactory(new PropertyValueFactory("runButton"));
-        runButtonCol.getStyleClass().add("center-left-align");
+        runButtonCol.getStyleClass().add("center-align");
         runButtonCol.setMinWidth(width);
         return runButtonCol;
     }

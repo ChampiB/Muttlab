@@ -1,5 +1,7 @@
 package muttlab.commands;
 
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,15 +16,22 @@ import muttlab.ui.components.ObservableStackWrapper;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.concurrent.*;
 
 public class CommandTask {
 
+    // Create a thread pool.
+    private final static ExecutorService threadPool = Executors.newFixedThreadPool(
+            Runtime.getRuntime().availableProcessors()
+    );
+
+    // Class' attributes.
     private PipedInputStream in;
     private PipedOutputStream out;
     private Command command;
     private String commandOutput;
     private ObservableStackWrapper<Matrix> matrices;
-    private Status status;
+    private Property<Status> status;
     private Button runButton;
 
     /**
@@ -60,7 +69,8 @@ public class CommandTask {
             Logging.log(LoggingLevel.ERROR, e.getMessage());
         }
         this.matrices = matrices;
-        this.status = Status.WAITING_FOR_RUN;
+        this.status = new SimpleObjectProperty<>();
+        this.status.setValue(Status.WAITING_FOR_RUN);
         this.command = command;
         this.runButton = createRunButton();
     }
@@ -91,16 +101,12 @@ public class CommandTask {
      * Execute the command.
      */
     public void execute() {
-        Thread thread = new Thread(() -> {
-            status = Status.RUNNING;
-            if (handleErrorWrapper(() -> command.execute(out, matrices))) {
-                status = Status.RUN_FAIL;
-            } else {
-                status = Status.RUN_SUCCESS;
-            }
-        });
-        thread.setDaemon(true);
-        thread.start();
+        this.status.setValue(Status.RUNNING);
+        CompletableFuture<Status> future = CompletableFuture.supplyAsync(() ->
+                (handleErrorWrapper(() -> command.execute(out, matrices))) ? Status.RUN_FAIL : Status.RUN_SUCCESS,
+                threadPool
+        );
+        future.thenAccept(s -> status.setValue(s));
     }
 
     /**
@@ -108,7 +114,7 @@ public class CommandTask {
      * @return true if the task's run is over and false otherwise.
      */
     public boolean isRunOver() {
-        return status == Status.RUN_FAIL || status == Status.RUN_SUCCESS;
+        return status.getValue() == Status.RUN_FAIL || status.getValue() == Status.RUN_SUCCESS;
     }
 
     /**
@@ -116,7 +122,7 @@ public class CommandTask {
      * @return true if the task has been run and false otherwise.
      */
     public boolean hasBeenRun() {
-        return status != Status.WAITING_FOR_RUN;
+        return status.getValue() != Status.WAITING_FOR_RUN;
     }
 
     /**
@@ -127,7 +133,7 @@ public class CommandTask {
     public String flush(ObservableStackWrapper<Matrix> stack) {
         // Apply the command's modification.
         boolean error = false;
-        if (status != Status.RUN_FAIL)
+        if (status.getValue() != Status.RUN_FAIL)
             error = handleErrorWrapper(() -> command.flush(stack));
         // Get the command's textual output.
         try {
@@ -143,7 +149,9 @@ public class CommandTask {
             error = true;
         }
         // Set the final tasks status.
-        status = (error || status == Status.RUN_FAIL) ? Status.TASK_FAIL : Status.TASK_SUCCESS;
+        status.setValue(
+                (error || status.getValue() == Status.RUN_FAIL) ? Status.TASK_FAIL : Status.TASK_SUCCESS
+        );
         return commandOutput;
     }
 
@@ -155,10 +163,8 @@ public class CommandTask {
         // Create the button.
         Button runButton = new Button();
         // Set the background.
-        File img = new File("./src/muttlab/ui/img/green-arrow.png");
-        Image image = new Image(img.toURI().toString(), 20, 20, true, true);
         Background background= new Background(new BackgroundImage(
-                image,
+                createImage("./src/muttlab/ui/img/green-arrow.png", 20, 20),
                 BackgroundRepeat.REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT,
@@ -191,13 +197,27 @@ public class CommandTask {
     }
 
     /**
+     * Create an image.
+     * @param fileName: The file name of the image.
+     * @param width: The width of the image.
+     * @param height: The height of the image.
+     * @return the image.
+     */
+    private Image createImage(String fileName, int width, int height) {
+        File file = new File(fileName);
+        return new Image(file.toURI().toString(), width, height, true, true);
+    }
+
+    /**
      * Getter.
      * @return the task's status.
      */
     public ImageView getStatus() {
-        File file = new File(status.toString());
-        Image img = new Image(file.toURI().toString(), 20, 20, true, true);
-        return new ImageView(img);
+        ImageView imageView = new ImageView(createImage(status.getValue().toString(), 20, 20));
+        status.addListener(
+                (event) -> imageView.setImage(createImage(status.getValue().toString(), 20, 20))
+        );
+        return imageView;
     }
 
     /**
