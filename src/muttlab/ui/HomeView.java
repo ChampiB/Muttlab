@@ -299,7 +299,7 @@ public class HomeView {
     private List<TableColumn> getColumnsOfRunningTable(int width) {
         // Create the columns.
         List<TableColumn> columns = new ArrayList<>();
-        columns.add(getNameColumn(width - 126));
+        columns.add(getNameColumn(width - 206));
         columns.add(getStatusColumn(100));
         columns.add(getRunButtonColumn(100));
         return columns;

@@ -3,6 +3,7 @@ package muttlab.commands;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import muttlab.exceptions.UserException;
 import muttlab.helpers.DisplayHelper;
 import muttlab.languages.MuttLabStrings;
@@ -22,6 +23,7 @@ public class CommandTask {
     private String commandOutput;
     private ObservableStackWrapper<Matrix> matrices;
     private Status status;
+    private Button runButton;
 
     /**
      * The tasks' status.
@@ -60,6 +62,7 @@ public class CommandTask {
         this.matrices = matrices;
         this.status = Status.WAITING_FOR_RUN;
         this.command = command;
+        this.runButton = createRunButton();
     }
 
     /**
@@ -145,6 +148,33 @@ public class CommandTask {
     }
 
     /**
+     * Create the button to run the task.
+     * @return the button.
+     */
+    private Button createRunButton() {
+        // Create the button.
+        Button runButton = new Button();
+        // Set the background.
+        File img = new File("./src/muttlab/ui/img/green-arrow.png");
+        Image image = new Image(img.toURI().toString(), 20, 20, true, true);
+        Background background= new Background(new BackgroundImage(
+                image,
+                BackgroundRepeat.REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT
+        ));
+        runButton.setBackground(background);
+        // Set the callback.
+        runButton.setOnAction(event -> {
+            if (hasBeenRun())
+                return;
+            this.execute();
+        });
+        return runButton;
+    }
+
+    /**
      * Getter.
      * @return the task's output.
      */
@@ -166,11 +196,8 @@ public class CommandTask {
      */
     public ImageView getStatus() {
         File file = new File(status.toString());
-        Image img = new Image(file.toURI().toString());
-        ImageView image = new ImageView(img);
-        image.setFitHeight(20);
-        image.setFitWidth(20);
-        return image;
+        Image img = new Image(file.toURI().toString(), 20, 20, true, true);
+        return new ImageView(img);
     }
 
     /**
@@ -178,13 +205,6 @@ public class CommandTask {
      * @return the button that run the task.
      */
     public Button getRunButton() {
-        Button runButton = new Button();
-        // runButton.getStyleClass().add("run-button");
-        runButton.setOnAction(event -> {
-            if (hasBeenRun())
-                return;
-            this.execute();
-        });
         return runButton;
     }
 }
