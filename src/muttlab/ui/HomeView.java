@@ -1,7 +1,5 @@
 package muttlab.ui;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import muttlab.MuttLab;
 import muttlab.commands.Command;
 import muttlab.commands.CommandTask;
@@ -41,13 +38,18 @@ public class HomeView {
     /**
      * Singleton design pattern.
      */
-    private static HomeView instance = new HomeView();
+    private static HomeView instance = null;
 
-    public static HomeView get() { return instance; }
+    public static HomeView get() { return get(null, null); }
+    public static HomeView get(HomeController controller, HomeModel model) {
+        if (instance == null && controller != null && model != null)
+            instance = new HomeView(controller, model);
+        return instance;
+    }
 
-    private HomeView() {
-        this.controller = HomeController.get();
-        this.model = HomeModel.get();
+    private HomeView(HomeController controller, HomeModel model) {
+        this.controller = controller;
+        this.model = model;
         this.root = createView();
     }
 

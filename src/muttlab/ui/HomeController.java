@@ -8,14 +8,10 @@ public class HomeController {
     private HomeModel model;
 
     /**
-     * Singleton design pattern.
+     * Build the home controller.
      */
-    private static HomeController instance = new HomeController();
-
-    public static HomeController get() { return instance; }
-
-    private HomeController() {
-        model = HomeModel.get();
+    public HomeController(HomeModel model) {
+        this.model = model;
     }
 
     /**

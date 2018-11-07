@@ -16,10 +16,10 @@ public class TasksManager {
     private static TasksManager instance = null;
 
     // Private constructor to ensure that there is only on instance of the class.
-    private TasksManager() {
+    private TasksManager(HomeController controller) {
         // Frequently check if we need to run tasks.
         Timeline cron = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            HomeController.get().updateTasksQueue();
+            controller.updateTasksQueue();
             if (!tasks.isEmpty()) {
                 tasks.get(0).run();
                 tasks.remove(0);
@@ -30,9 +30,9 @@ public class TasksManager {
     }
 
     // Initializer.
-    public static void init() {
+    public static void init(HomeController controller) {
         if (instance == null)
-            instance = new TasksManager();
+            instance = new TasksManager(controller);
     }
 
     /**

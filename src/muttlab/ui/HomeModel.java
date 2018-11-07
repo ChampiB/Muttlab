@@ -19,13 +19,9 @@ public class HomeModel {
     private StringProperty consoleOutput;
 
     /**
-     * Singleton design pattern.
+     * Build the home model.
      */
-    private static HomeModel instance = new HomeModel();
-
-    public static HomeModel get() { return instance; }
-
-    private HomeModel() {
+    public HomeModel() {
         runningTasks = FXCollections.observableArrayList();
         tasksHistory = FXCollections.observableArrayList();
         matrices = new ObservableStackWrapper<>();
