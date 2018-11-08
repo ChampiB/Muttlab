@@ -39,7 +39,9 @@ public class CommandSaveStack extends Command {
         // Check if the current stream is present.
         CurrentStream.checkIsPresent();
         // Save all the matrix of the stream in the stack.
-        CurrentStream.getInstance().getCurrentStream().ifPresent(s -> matrices = s.collect(Collectors.toList()));
+        CurrentStream.getInstance().getCurrentStream().ifPresent(
+                s -> matrices = s.collect(Collectors.toList())
+        );
         CurrentStream.getInstance().setCurrentStream(null);
     }
 

@@ -74,7 +74,9 @@ public class CommandSaveFile extends Command {
         // Check if the current stream is present.
         CurrentStream.checkIsPresent();
         // Compute the stream.
-        CurrentStream.getInstance().getCurrentStream().ifPresent(s -> matrices = s.collect(Collectors.toList()));
+        CurrentStream.getInstance().getCurrentStream().ifPresent(
+                s -> matrices = s.collect(Collectors.toList())
+        );
         CurrentStream.getInstance().setCurrentStream(null);
     }
 

@@ -1,19 +1,15 @@
 package core.commands;
 
 import muttlab.commands.Command;
-import muttlab.helpers.CommandHelper;
 import muttlab.languages.MuttLabStrings;
 import muttlab.math.Matrix;
-import muttlab.ui.HomeController;
 import muttlab.ui.HomeView;
+import muttlab.ui.TasksManager;
 import muttlab.ui.components.ObservableStackWrapper;
 
-import javax.swing.text.html.ListView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class CommandScript extends Command {
@@ -63,7 +59,7 @@ public class CommandScript extends Command {
     protected void flush(ObservableStackWrapper<Matrix> elements) throws Exception {
         Scanner input = new Scanner(new FileInputStream(new File(fileName)));
         while (input.hasNextLine()) {
-            HomeController.get().handleNewCommand(input.nextLine());
+            TasksManager.pushToController(input.nextLine());
         }
     }
 }
