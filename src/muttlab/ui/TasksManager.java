@@ -19,7 +19,7 @@ public class TasksManager {
     private TasksManager(HomeController controller) {
         // Frequently check if we need to run tasks.
         Timeline cron = new Timeline(new KeyFrame(Duration.millis(100), event -> {
-            controller.updateTasksQueue();
+            controller.updateRunningTasks();
             if (!tasks.isEmpty()) {
                 tasks.get(0).run();
                 tasks.remove(0);

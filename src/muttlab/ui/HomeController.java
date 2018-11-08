@@ -17,7 +17,7 @@ public class HomeController {
     /**
      * Update the tasks' queue.
      */
-    synchronized void updateTasksQueue() {
+    synchronized void updateRunningTasks() {
         model.moveTaskFinishedToHistory();
         if (!model.isCurrentTaskRunning()) {
             model.runNext();

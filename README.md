@@ -6,14 +6,6 @@ The program's entry point is in the following class: "muttlab.Main".
 
 _Author: __Théophile Champion__._
 
-## How to compile it ?
-
-Execute the shell script: ```./build.sh```.
-
-## How to run it ?
-
-Execute the shell script: ```./run.sh```.
-
 ## How to add new commands in the core plugin ?
 
 1 - Implement the command's class and place it in the ```commands``` package, e.g. ```public class CommandTranspose() extends Command { ... }```.

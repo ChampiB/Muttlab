@@ -1,7 +1,5 @@
 package muttlab.commands;
 
-import muttlab.exceptions.UserException;
-import muttlab.languages.MuttLabStrings;
 import muttlab.plugins.Plugin;
 import muttlab.plugins.PluginsManager;
 

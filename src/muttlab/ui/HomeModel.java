@@ -4,12 +4,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import muttlab.commands.Command;
 import muttlab.commands.CommandTask;
 import muttlab.math.Matrix;
 import muttlab.ui.components.ObservableStackWrapper;
-
-import java.util.Iterator;
 
 public class HomeModel {
 
